@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  View, TouchableOpacity} from 'react-native';
+import {  View, TouchableOpacity, ToastAndroid} from 'react-native';
 // import { Camera } from 'expo-camera';
 import { 
   Container, 
@@ -24,6 +24,7 @@ import Icon2 from "react-native-vector-icons/MaterialIcons";
 import Icon3 from "react-native-vector-icons/AntDesign";
 import Icon4 from "react-native-vector-icons/MaterialIcons";
 import Menu from '../components/Menu';
+import axios from 'axios';
 
 
 
@@ -37,30 +38,18 @@ export default class Pengajuan extends Component {
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
 
-    this.state = { chosenDate: new Date() };
+    this.state = { 
+      chosenDate: new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString() ,
+      noTransaksi : '',
+      tglTransaksi : new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString(),
+      noNasabah : '',
+      Ket : '' };
     this.setDate = this.setDate.bind(this);
     this.current_date = date;
     this.current_month = month;
     this.current_year = year;
     
   }
-  // state = {
-  //   hasPermission: null,
-  //   type: Camera.Constants.Type.back,
-  // }
-  // async componentDidMount() {
-  //   const { status } = await Permissions.askAsync(Permissions.CAMERA);
-  //   this.setState({ hasPermission: status === 'granted' });
-  // }
-  // handleCameraType=()=>{
-  //   const { cameraType } = this.state
-
-  //   this.setState({cameraType:
-  //     cameraType === Camera.Constants.Type.back
-  //     ? Camera.Constants.Type.front
-  //     : Camera.Constants.Type.back
-  //   })
-  // }
   
   setDate(newDate) {
     this.setState({ chosenDate: newDate });
@@ -77,19 +66,37 @@ export default class Pengajuan extends Component {
       return date + '-' + month + '-' + year;//format: dd-mm-yyyy;
   }
 
+  simpanData =() =>{
+    // console.log(this.state);
+    const { chosenDate , noTransaksi, tglTransaksi, noNasabah, Ket } = this.state;
+    const dataInsert = {
+       nomor_transaksi : noTransaksi, tanggal_transaksi : tglTransaksi, nomor_nasabah:noNasabah,tanggal_peminjaman : chosenDate , keterangan:Ket
+    }
+    // console.log(chosenDate);
+    
+    axios.post('http://localhost:3131/pengajuan',dataInsert)
+      .then(res=> {
+        console.log(res.data.success);
+        if (res.data.success) {
+          this.props.navigation.navigate('HomeScreen');
+          // console.log("simpan berhasil");
+          ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
+        }else{
+          console.log("weew");
+        }
+      })
+      .catch(error => console.log(error));
+    }
+
   render() {
-    // const { hasPermission } = this.state
-    // if (hasPermission === null) {
-    //   return <View />;
-    // } else if (hasPermission === false) {
-    //   return <Text>No access to camera</Text>;
-    // } else {
+
       return (
         <Container>
           <Header>
             <Left>
-              <Button transparent >
-                <Icon3 name='arrowleft' style={{color:'#f0ffff'}} size={30}></Icon3>
+              <Button transparent onPress ={()=> navigation.navigate('Homescreen')}>
+                <Icon3 name='arrowleft' style={{color:'#f0ffff'}} size={30} ></Icon3>
+                
               </Button>
             </Left>
             <Body>
@@ -105,7 +112,7 @@ export default class Pengajuan extends Component {
             <Form>
               <Item stackedLabel>
                 <Label>Nomor Transaksi</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({noTransaksi: value})}/>
               </Item> 
               <Item stackedLabel>
                 <Label>
@@ -117,11 +124,11 @@ export default class Pengajuan extends Component {
               </Item> 
               <Item stackedLabel>
                 <Label>Nomor Nasabah</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({noNasabah: value})}/>
               </Item>
               <Item disabled stackedLabel style={{alignItems:"flex-start"}}>
                 <Label>Tanggal Peminjaman</Label>
-                <View style={{flexDirection:"row"}}>
+                {/* <View style={{flexDirection:"row"}}>
                   <DatePicker
                     defaultDate={new Date()}
                     minimumDate={new Date(1990-1, 12, 31)}
@@ -139,16 +146,15 @@ export default class Pengajuan extends Component {
                     style={{padding:0, marginLeft:0}}
                     />
                     <Label>{this.state.chosenDate.toString().substr(4, 12)}</Label>
-                </View>
+                </View> */}
+                <Text>{new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString()}</Text>
+
               </Item>
               <Item stackedLabel>
                 <Label>Keterangan</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({Ket: value})}/>
               </Item>
-              <Item stackedLabel last>
-                <Label>Status</Label>
-                <Input />
-              </Item>
+
               {/* <Item style={{ flexDirection:'row', marginBottom:20 }}>
                 <Button iconLeft style={{ marginRight:10, width:'45%' }}>
                   <Icon4 name='attach-file' size={40}></Icon4>
@@ -156,7 +162,9 @@ export default class Pengajuan extends Component {
                 </Button>  
               </Item> */}
               <Item style={{ flexDirection:'row' }}>
-                <Button rounded success style={{ marginRight:10, width:'45%' }}>
+                <Button rounded success style={{ marginRight:10, width:'45%' }} onPress={()=> {
+                  this.simpanData();
+                }}>
                   <Icon1 name="save" size={40}></Icon1>
                   <Text style={{justifyContent: "center",alignItems: "center"}}>Save</Text>
                 </Button> 
@@ -165,41 +173,6 @@ export default class Pengajuan extends Component {
                   <Text style={{justifyContent: "center",alignItems: "center"}}>Cancel</Text>
                 </Button> 
               </Item>
-              
-              {/* <View style={{ flex: 1 }}> */}
-                {/* <Camera style={{ flex: 1 }} type={this.state.cameraType}></Camera> */}
-                {/* <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent',
-                  }}
-                  onPress={()=>this.handleCameraType()}
-                  >
-                  <MaterialCommunityIcons
-                      name="camera-switch"
-                      style={{ color: "#fff", fontSize: 40}}
-                  />
-                </TouchableOpacity> */}
-                {/* <Camera style={{ flex: 1 }} type={this.state.cameraType}>
-                  <View
-                    style={{
-                      flex: 1,
-                      backgroundColor: 'transparent',
-                      flexDirection: 'row',
-                    }}>
-                    <TouchableOpacity
-                      style={{
-                        flex: 0.1,
-                        alignSelf: 'flex-end',
-                        alignItems: 'center',
-                      }}
-                      onPress={()=>this.handleCameraType()}>
-                      <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
-                    </TouchableOpacity>
-                  </View>
-                </Camera> */}
-              {/* </View> */}
             </Form> 
           </Content>
           <Menu navigation={this.props.navigation}/>

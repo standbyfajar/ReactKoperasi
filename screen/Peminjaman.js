@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  View, TouchableOpacity} from 'react-native';
+import {  View, TouchableOpacity,ToastAndroid} from 'react-native';
 // import { Camera } from 'expo-camera';
 import { 
   Container, 
@@ -22,7 +22,10 @@ import {
 import Icon1 from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/MaterialIcons";
 import Icon3 from "react-native-vector-icons/AntDesign";
+import Icon4 from "react-native-vector-icons/Entypo";
+
 import Menu from '../components/Menu';
+import axios from 'axios';
 
 
 // import * as Permissions from 'expo-permissions';
@@ -35,30 +38,86 @@ export default class Peminjaman extends Component {
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
 
-    this.state = { chosenDate: new Date() };
+    this.state = { chosenDate: new Date(),
+      noPengajuan : '',
+      tanggaltransaksi : new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString(),
+      noPinjam : '',
+      noNasabah: '',
+      totalTabungan:0,
+      nominal : '',
+      cicil : '',
+      bunga :'',
+      kredit:'',
+      ket:''  };
     this.setDate = this.setDate.bind(this);
     this.current_date = date;
     this.current_month = month;
     this.current_year = year;
     
   }
-  // state = {
-  //   hasPermission: null,
-  //   type: Camera.Constants.Type.back,
-  // }
-  // async componentDidMount() {
-  //   const { status } = await Permissions.askAsync(Permissions.CAMERA);
-  //   this.setState({ hasPermission: status === 'granted' });
-  // }
-  // handleCameraType=()=>{
-  //   const { cameraType } = this.state
 
-  //   this.setState({cameraType:
-  //     cameraType === Camera.Constants.Type.back
-  //     ? Camera.Constants.Type.front
-  //     : Camera.Constants.Type.back
-  //   })
+  //  GetDataUser = async () => {
+  //   try{
+  //     let dataAsyncStorage = await AsyncStorage.getItem('');
+  //     dataAsyncStorage = dataAsyncStorage != null ? JSON.parse(dataAsyncStorage) : null;
+  //     this.setState({nomor_nasabah:dataAsyncStorage.nomor_nasabah});
+    
+  //   }
   // }
+  GetOtomatisPengajuan =() =>{
+    // console.log('aa');
+    axios.get('http://localhost:3131/peminjaman/1111/1211')
+      .then(res=> {
+        // console.log(res.data.data[0].nomor_transaksi);
+        // let data= res.data;
+        let data= res.data.data[0];
+        // console.log(data);
+
+        if (res.data.success) {
+          this.setState({
+            noPengajuan:data.nomor_transaksi,
+            noNasabah:data.nomor_nasabah, 
+            noPinjam:res.data.notrans,
+            totalTabungan:res.data.tabungan
+          });
+          // console.log(this.state.totalTabungan);
+
+        }else{
+          console.log('Error');
+        }
+      })
+      .catch(error => console.log(error));
+
+  }
+
+  simpanData =() =>{
+    // console.log(this.state);
+    const { chosenDate, noPengajuan,tanggaltransaksi, noPinjam, noNasabah, nominal, cicil, bunga, kredit, ket, totalTabungan } = this.state;
+    const dataInsert = {
+       nomor_pengajuan : noPengajuan, tanggal_transaksi : tanggaltransaksi, nomor_pinjam:noPinjam,
+       nomor_nasabah : noNasabah ,nominal:nominal,cicilan:cicil,bunga:bunga,kredit_bulan:kredit, keterangan:ket
+    }
+    // console.log(dataInsert);
+    
+      if(nominal > totalTabungan){
+        ToastAndroid.show('Tidak bisa cok', ToastAndroid.LONG);
+      }else{
+        axios.post('http://localhost:3131/peminjaman',dataInsert)
+        .then(res=> {
+          // console.log(res.data);
+          // console.log(res.data.success);
+          if (res.data.success) {
+            this.props.navigation.navigate('HomeScreen');
+            // console.log("simpan berhasil");
+            ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
+          }else{
+            console.log("weew");
+          }
+        })
+        .catch(error => console.log(error));
+      }
+    }
+
   
   setDate(newDate) {
     this.setState({ chosenDate: newDate });
@@ -80,8 +139,8 @@ export default class Peminjaman extends Component {
         <Container>
           <Header>
             <Left>
-              <Button transparent >
-                <Icon3 name='arrowleft' style={{color:'#f0ffff'}} size={30}></Icon3>
+              <Button transparent onPress={() => {this.props.navigation.navigate("HomeScreen")}}>
+                <Icon3 name='arrowleft' style={{color:'#f0ffff'}} size={30} ></Icon3>
               </Button>
             </Left>
             <Body>
@@ -95,49 +154,64 @@ export default class Peminjaman extends Component {
           </Header>
           <Content style={{marginBottom:50}}>
             <Form>
-              <Item stackedLabel>
-                <Label>Nomor Pengajuan</Label>
-                <Input />
+              <Item stackedLabel style={{alignItems:"flex-start"}}>
+                <View style={{flexDirection:'row'}}>
+                  <Label>Nomor Pengajuan </Label>
+                  <TouchableOpacity transparent onPress={()=> this.GetOtomatisPengajuan()}>
+                    <Icon4 name='popup' style={{color:'#f0ffff', marginTop:10}} size={20}>
+
+                    </Icon4>
+                  </TouchableOpacity>
+                </View> 
+                <Input onChangeText={(value) => this.setState({noPengajuan: value})} value={this.state.noPengajuan} editable={false}/>
               </Item> 
               <Item stackedLabel>
                 <Label>
                   Tanggal Transaksi
                 </Label>
                 <Label>
-                  {this.state.chosenDate.toString().substr(4, 12)}
+                <Text>{new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString()}</Text>
+                  {/* {this.state.chosenDate.toString().substr(4, 12)} */}
                 </Label>
               </Item> 
               <Item stackedLabel>
                 <Label>No Transaksi</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({noPinjam: value})} value={this.state.noPinjam} editable={false}/>
               </Item>
               <Item  stackedLabel>
                 <Label>Nasabah</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({noNasabah: value})} value={this.state.noNasabah} editable={false}/>
+                
               </Item>
               <Item stackedLabel>
-                <Label>Total Tabungan</Label>
-                <Input />
+                <Label>Total Tabungan </Label>
+                <Input onChangeText={(value) => this.setState({totalTabungan: value})} value={this.state.totalTabungan.toString()} editable={false}/>
               </Item>
               <Item stackedLabel last>
                 <Label>Nominal</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({nominal: value})}/>
               </Item>
               <Item stackedLabel last>
                 <Label>x cicilan</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({cicil: value})}/>
               </Item>
               <Item stackedLabel last>
                 <Label>Jasa</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({bunga: value})}/>
               </Item>
               <Item stackedLabel last>
                 <Label>Cicilan/Bulan</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({kredit: value})}/>
+              </Item>
+              <Item stackedLabel last>
+                <Label>keterangan</Label>
+                <Input onChangeText={(value) => this.setState({ket: value})}/>
               </Item>
               
               <Item style={{ flexDirection:'row' }}>
-                <Button rounded info style={{ marginRight:10, width:'45%' }}>
+                <Button rounded info style={{ marginRight:10, width:'45%' }} onPress={()=>{
+                  this.simpanData();
+                }}>
                   <Icon1 name="save" size={40} style={{marginLeft:10}}></Icon1>
                   <Text style={{justifyContent: "center",alignItems: "center"}}>Save</Text>
                 </Button> 
@@ -155,3 +229,21 @@ export default class Peminjaman extends Component {
     
   }
 }
+
+  // state = {
+  //   hasPermission: null,
+  //   type: Camera.Constants.Type.back,
+  // }
+  // async componentDidMount() {
+  //   const { status } = await Permissions.askAsync(Permissions.CAMERA);
+  //   this.setState({ hasPermission: status === 'granted' });
+  // }
+  // handleCameraType=()=>{
+  //   const { cameraType } = this.state
+
+  //   this.setState({cameraType:
+  //     cameraType === Camera.Constants.Type.back
+  //     ? Camera.Constants.Type.front
+  //     : Camera.Constants.Type.back
+  //   })
+  // }

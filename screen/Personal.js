@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  View, TouchableOpacity, Image } from 'react-native';
+import {  View, TouchableOpacity, Image, ToastAndroid } from 'react-native';
 // import { Camera } from 'expo-camera';
 import { 
   Container, 
@@ -28,10 +28,12 @@ import Icon3 from "react-native-vector-icons/AntDesign";
 import Menu from '../components/Menu';
 import RadioButtonRN from 'radio-buttons-react-native';
 import ImagePicker from 'react-native-image-picker';
+import { log } from 'react-native-reanimated';
+import axios from 'axios';
+
 
 // import * as Permissions from 'expo-permissions';
 // import { FontAwesome, Ionicons,MaterialCommunityIcons } from '@expo/vector-icons';
-
 export default class Personal extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +41,21 @@ export default class Personal extends Component {
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
 
-    this.state = { chosenDate: new Date(), usia : '' };
+    this.state = { chosenDate: new Date(), 
+      noNasabah : '',
+      namaNasabah : '',
+      tempatLahir : '',
+      tanggalLahir : new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString(),
+      usia : '',
+      jenisKelamin: '',
+      typeIdentitas : '',
+      noIdentitas : '',
+      alamat :'',
+      bank:'',
+      NoRek:'',
+      telepon : '',
+      Foto : '',
+      FotoIdentitas : '' };
     this.setDate = this.setDate.bind(this);
     this.current_date = date;
     this.current_month = month;
@@ -47,31 +63,60 @@ export default class Personal extends Component {
     
   }
 
+  GetOtomatisnomor =() =>{
+    // console.log('aa');
+    axios.get('http://localhost:3131/nasabah/124')
+      .then(res=> {
+        // console.log(res.data.data[0].nomor_transaksi);
+        // let data= res.data;
+        let data= res.data.data[0];
+        // console.log(data);
+  
+        if (res.data.success) {
+          this.setState({
+            noNasabah:res.data.noNasa
+          });
+          // console.log(this.state.totalTabungan);
+  
+        }else{
+          console.log('Error');
+        }
+      })
+      .catch(error => console.log(error));
+  
+  }
+  
+  Simpan = () => {
+    // console.log('weew');
+    const { noNasabah, namaNasabah, tempatLahir, tanggalLahir, usia, jenisKelamin, typeIdentitas, noIdentitas, alamat,
+    bank, NoRek, telepon, Foto, FotoIdentitas } = this.state;
+    const dataInput = {
+      nomor_nasabah : noNasabah, nama_nasabah:namaNasabah ,tempat_lahir : tempatLahir,
+      tanggal_lahir : tanggalLahir,usia:usia ,jenis_kelamin : jenisKelamin ,type_identitas:typeIdentitas, 
+      no_identitas:noIdentitas,alamat:alamat, Bank:bank, no_rek:NoRek, telepon:telepon,Foto:Foto,Foto_identitas:FotoIdentitas
+   }
+   axios.post('http://localhost:3131/nasabah',dataInput)
+      .then(res=> {
+        // console.log(res.data.success);
+        if (res.data.success) {
+          this.props.navigation.navigate('HomeScreen');
+          // console.log("simpan berhasil");
+          ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
+        }else{
+          console.log("weew");
+        }
+      })
+      .catch(error => console.log(error));
+  }
+  
+
   onValueChange(value: string) {
     this.setState({
-      selected: value
+      selected: value,
+      typeIdentitas: value
     });
   }
 
-  
-  // state = {
-  //   hasPermission: null,
-  //   type: Camera.Constants.Type.back,
-  // }
-  // async componentDidMount() {
-  //   const { status } = await Permissions.askAsync(Permissions.CAMERA);
-  //   this.setState({ hasPermission: status === 'granted' });
-  // }
-  // handleCameraType=()=>{
-  //   const { cameraType } = this.state
-
-  //   this.setState({cameraType:
-  //     cameraType === Camera.Constants.Type.back
-  //     ? Camera.Constants.Type.front
-  //     : Camera.Constants.Type.back
-  //   })
-  // }
-  
   setDate(newDate) {
 
     //   alert(newDate - new Date());
@@ -135,6 +180,8 @@ export default class Personal extends Component {
   }
 
   render() {
+    this.GetOtomatisnomor()
+
     const tdata = [
         {
             label: 'Laki-Laki'
@@ -148,7 +195,7 @@ export default class Personal extends Component {
           <Header>
             <Left>
               <Button transparent >
-                <Icon3 name='arrowleft' style={{color:'#f0ffff'}} size={30}></Icon3>
+                <Icon3 name='arrowleft' style={{color:'#f0ffff'}} size={30} onPress={() => {this.props.navigation.navigate("AkunSaya")}}></Icon3>
               </Button>
             </Left>
             <Body>
@@ -164,22 +211,22 @@ export default class Personal extends Component {
             <Form>
               <Item stackedLabel>
                 <Label>Nomor Nasabah</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({noNasabah: value})} value={this.state.noNasabah} editable={false}/>
               </Item> 
               <Item stackedLabel>
                 <Label>
                   Nama Nasabah
                 </Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({namaNasabah: value})}/>
               </Item> 
               <Item stackedLabel>
                 <Label style={{fontWeight:"bold", color:'white'}}>Tempat Lahir</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({tempatlahir: value})}/>
               </Item>
               <Item disabled stackedLabel style={{alignItems:"flex-start"}}>
                 <Label>Tanggal Lahir</Label>
                 <View style={{flexDirection:"row"}}>
-                  <DatePicker
+                  {/* <DatePicker
                     defaultDate={new Date()}
                     minimumDate={new Date(1990-1, 12, 31)}
                     maximumDate={new Date(2025-1, 12, 31)}
@@ -195,7 +242,8 @@ export default class Personal extends Component {
                     disabled={false}
                     style={{padding:0, marginLeft:0}}
                     />
-                    <Label>{this.state.chosenDate.toString().substr(4, 12)}</Label>
+                    <Label>{this.state.chosenDate.toString().substr(4, 12)}</Label> */}
+                    <Text>{new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString()}</Text>
                 </View>
               </Item>
               <Item disabled stackedLabel style={{alignItems:"flex-start"}}>
@@ -208,7 +256,7 @@ export default class Personal extends Component {
                 <Label>Jenis Kelamin</Label>                
                 <RadioButtonRN
                 data={tdata}
-                selectedBtn={(e) => console.log(e)}
+                selectedBtn={(e) => this.setState({jenisKelamin: e.label})}
                 />
               </View>
               <Item stackedLabel style={{alignItems:"flex-start"}}>
@@ -227,23 +275,23 @@ export default class Personal extends Component {
               </Item>
               <Item stackedLabel>
                 <Label>No Identitas</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({noIdentitas: value})}/>
               </Item>
               <Item stackedLabel>
                 <Label>Alamat</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({alamat: value})}/>
               </Item>
               <Item stackedLabel>
                 <Label>Bank</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({bank: value})}/>
               </Item>
               <Item stackedLabel>
                 <Label>No Rek</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({NoRek: value})}/>
               </Item>
               <Item stackedLabel>
                 <Label>Telepon</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({telepon: value})}/>
               </Item>
               <Item disabled stackedLabel>
                 <Label>Total Tabungan</Label>
@@ -268,14 +316,13 @@ export default class Personal extends Component {
               </Item>
               <Item stackedLabel>
                 <Label>Foto Identitas</Label>
-                <Input />
+                <Input onChangeText={(value) => this.setState({namaNasabah: value})}/>
               </Item>
-              <Item disabled stackedLabel>
-                <Label>Status</Label>
-                <Input />
-              </Item>
+             
               <Item style={{ flexDirection:'row' }}>
-                <Button rounded success style={{ marginRight:10, width:'45%' }}>
+                <Button rounded success style={{ marginRight:10, width:'45%' }} onPress={()=> {
+                this.Simpan();
+                }}>
                   <Icon1 name="save" size={40}></Icon1>
                   <Text style={{justifyContent: "center",alignItems: "center"}}>Save</Text>
                 </Button> 
@@ -290,45 +337,9 @@ export default class Personal extends Component {
           <Menu navigation={this.props.navigation}/>
         </Container>
       ); 
-    // }
-               
-              {/* <View style={{ flex: 1 }}> */}
-                {/* <Camera style={{ flex: 1 }} type={this.state.cameraType}></Camera> */}
-                {/* <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent',
-                  }}
-                  onPress={()=>this.handleCameraType()}
-                  >
-                  <MaterialCommunityIcons
-                      name="camera-switch"
-                      style={{ color: "#fff", fontSize: 40}}
-                  />
-                </TouchableOpacity> */}
-                {/* <Camera style={{ flex: 1 }} type={this.state.cameraType}>
-                  <View
-                    style={{
-                      flex: 1,
-                      backgroundColor: 'transparent',
-                      flexDirection: 'row',
-                    }}>
-                    <TouchableOpacity
-                      style={{
-                        flex: 0.1,
-                        alignSelf: 'flex-end',
-                        alignItems: 'center',
-                      }}
-                      onPress={()=>this.handleCameraType()}>
-                      <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
-                    </TouchableOpacity>
-                  </View>
-                </Camera> */}
-              {/* </View> */}
+
   }
 }
 
 
 
-//export default Pengajuan;

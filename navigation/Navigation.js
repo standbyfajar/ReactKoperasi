@@ -10,6 +10,10 @@ import Pengajuan from '../screen/Pengajuan';
 import Peminjaman from '../screen/Peminjaman';
 import Login from '../screen/Login';
 import Personal from '../screen/Personal';
+import Register from '../screen/Register';
+import Email from '../screen/Email';
+import GantiPass from '../screen/GantiPass';
+
 
 // import Camera from '../screen/Camera';
 
@@ -22,6 +26,9 @@ const Navigation = createStackNavigator(
         TransaksiPeminjaman : Peminjaman,
         Login : Login,
         Personal : Personal,
+        Regis : Register,
+        Email : Email,
+        GantiPass : GantiPass
         // Camera : Camera
     },
     {

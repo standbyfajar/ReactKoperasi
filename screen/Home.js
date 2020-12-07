@@ -25,7 +25,7 @@ const Home = ({navigation}) => {
             <View style={{flexDirection:"column"}}>
                             <View style={{flexDirection:"row", flex:1, justifyContent:"center"}}>
                                 <View style={{justifyContent:"center",flex:2, alignItems:"center"}}>
-                                    <Text><Iconawe name="book" size={60}></Iconawe></Text>
+                                    <Text><Iconawe name="book" size={60} onPress={() => {navigation.navigate("AkunSaya")}}></Iconawe></Text>
                                 </View>
                                 <View style={{justifyContent:"center",flex:3}}>
                                     <TouchableOpacity onPress={() => {navigation.navigate("AkunSaya")}}><Text >Master Data</Text></TouchableOpacity>
@@ -34,7 +34,7 @@ const Home = ({navigation}) => {
                             
                             <View style={{flexDirection:"row",flex:1, justifyContent:"center"}}>
                                 <View style={{justifyContent:"center" , flex:2, alignItems:"center"}}>
-                                    <Text ><Icon3 name="open-book" size={60}></Icon3></Text>
+                                    <Text ><Icon3 name="open-book" size={60} onPress={() => {navigation.navigate("TransaksiPengajuan")}}></Icon3></Text>
                                 </View>
                                 <View style={{justifyContent:"center",flex:3}}>
                                 <TouchableOpacity onPress={() => {navigation.navigate("TransaksiPengajuan")}}><Text >Transaksi Pengajuan </Text></TouchableOpacity>
@@ -43,20 +43,20 @@ const Home = ({navigation}) => {
                             </View>
                             <View style={{flexDirection:"row",flex:1, justifyContent:"center"}}>
                                 <View style={{justifyContent:"center",flex:2, alignItems:"center"}}>
-                                  <Text><Iconawe name="money-bill-wave" size={60}></Iconawe></Text>
+                                  <Text><Iconawe name="money-bill-wave" size={60} onPress={() => {navigation.navigate("TransaksiPeminjaman")}} ></Iconawe></Text>
                                 </View>
                                 <View style={{justifyContent:"center",flex:3}}>
                                 <TouchableOpacity onPress={() => {navigation.navigate("TransaksiPeminjaman")}}><Text >Transaksi Peminjaman </Text></TouchableOpacity>
                                 </View>
                             </View>
-                            <View style={{flexDirection:"row",flex:1, justifyContent:"center"}}>
+                            {/* <View style={{flexDirection:"row",flex:1, justifyContent:"center"}}>
                                 <View style={{justifyContent:"center",flex:2, alignItems:"center"}}>
                                   <Text><Icon name="user" size={60} onPress={() => {navigation.navigate("Personal")}}></Icon></Text>
                                 </View>
                                 <View style={{justifyContent:"center",flex:3}}>
                                 <TouchableOpacity onPress={() => {navigation.navigate("Personal")}}><Text >Personal Info </Text></TouchableOpacity>
                                 </View>
-                            </View>
+                            </View> */}
                             <View style={{flexDirection:"row",flex:1, justifyContent:"center"}}>
                                 <View style={{justifyContent:"center",flex:2, alignItems:"center"}}>
                                   <Text><Icon3 name="log-out" size={60} onPress={() => {navigation.navigate("Login")}}></Icon3></Text>
@@ -65,6 +65,14 @@ const Home = ({navigation}) => {
                                 <TouchableOpacity onPress={() => {navigation.navigate("Login")}}><Text >Login </Text></TouchableOpacity>
                                 </View>
                             </View>
+                            {/* <View style={{flexDirection:"row",flex:1, justifyContent:"center"}}>
+                                <View style={{justifyContent:"center",flex:2, alignItems:"center"}}>
+                                  <Text><Icon3 name="log-out" size={60} onPress={() => {navigation.navigate("Register")}}></Icon3></Text>
+                                </View>
+                                <View style={{justifyContent:"center",flex:3}}>
+                                <TouchableOpacity onPress={() => {navigation.navigate("Register")}}><Text >Regis </Text></TouchableOpacity>
+                                </View>
+                            </View> */}
 
                     </View>
             </Content>

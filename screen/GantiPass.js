@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {  View, TouchableOpacity, ToastAndroid} from 'react-native';
-// import { Camera } from 'expo-camera';
 import { 
   Container, 
   Header, 
@@ -26,12 +25,7 @@ import Icon4 from "react-native-vector-icons/MaterialIcons";
 import Menu from '../components/Menu';
 import axios from 'axios';
 
-
-
-// import * as Permissions from 'expo-permissions';
-// import { FontAwesome, Ionicons,MaterialCommunityIcons } from '@expo/vector-icons';
-
-export default class Pengajuan extends Component {
+export default class GantiPass extends Component {
   constructor(props) {
     super(props);
     var date = new Date().getDate();
@@ -54,30 +48,7 @@ export default class Pengajuan extends Component {
   setDate(newDate) {
     this.setState({ chosenDate: newDate });
   }
-
-  GetOtomatisTransaksi =() =>{
-    // console.log('aa');
-    axios.get('http://localhost:3131/pengajuan/124')
-      .then(res=> {
-        // console.log(res.data.data[0].nomor_transaksi);
-        // let data= res.data;
-        let data= res.data.data[0];
-        // console.log(data);
-
-        if (res.data.success) {
-          this.setState({
-            noTransaksi:res.data.notrans,
-            noNasabah:data.nomor_nasabah, 
-          });
-          // console.log(this.state.totalTabungan);
-
-        }else{
-          console.log('Error');
-        }
-      })
-      .catch(error => console.log(error));
-
-  }
+  
   getCurrentDate=()=>{
 
       var date = new Date().getDate();
@@ -119,18 +90,18 @@ export default class Pengajuan extends Component {
     }
 
   render() {
-    this.GetOtomatisTransaksi()
+
       return (
         <Container>
           <Header>
             <Left>
-              <Button transparent onPress={() => {this.props.navigation.navigate("HomeScreen")}}>
+              <Button transparent onPress={() => {this.props.navigation.navigate("AkunSaya")}}>
                 <Icon3 name='arrowleft' style={{color:'#f0ffff'}} size={30} ></Icon3>
                 
               </Button>
             </Left>
             <Body>
-              <Title>Transaksi Pengajuan</Title>
+              <Title>Ganti Password</Title>
             </Body>
             <Right>
               <Button transparent>
@@ -141,56 +112,18 @@ export default class Pengajuan extends Component {
           <Content>
             <Form>
               <Item stackedLabel>
-                <Label>Nomor Transaksi</Label>
-                <Input onChangeText={(value) => this.setState({noTransaksi: value})} value={this.state.noTransaksi} required editable={false}/>
+                <Label>Username</Label>
+                <Input onChangeText={(value) => this.setState({noTranaksi: value})} Readonly/>
               </Item> 
               <Item stackedLabel>
-                <Label>
-                  Tanggal Transaksi
-                </Label>
-                <Label>
-                  <Text>{new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString()}</Text>
-                </Label>
+                <Label>Email</Label>
+                <Input onChangeText={(value) => this.setState({noTranaksi: value})} Readonly/>
               </Item> 
               <Item stackedLabel>
-                <Label>Nomor Nasabah</Label>
-                <Input onChangeText={(value) => this.setState({noNasabah: value})} value={this.state.noNasabah} editable={false}/>
-              </Item>
-              <Item disabled stackedLabel style={{alignItems:"flex-start"}}>
-                <Label>Tanggal Peminjaman</Label>
-                {/* <View style={{flexDirection:"row"}}>
-                  <DatePicker
-                    defaultDate={new Date()}
-                    minimumDate={new Date(1990-1, 12, 31)}
-                    maximumDate={new Date(2025-1, 12, 31)}
-                    locale={"en"}
-                    timeZoneOffsetInMinutes={undefined}
-                    modalTransparent={false}
-                    animationType={"fade"}
-                    androidMode={"default"}
-                    placeHolderText={this.state.chosenDate.toString().substr(4, 12)}
-                    textStyle={{ color: "green" }}
-                    placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={this.setDate}
-                    disabled={false}
-                    style={{padding:0, marginLeft:0}}
-                    />
-                    <Label>{this.state.chosenDate.toString().substr(4, 12)}</Label>
-                </View> */}
-                <Text>{new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString()}</Text>
-
-              </Item>
-              <Item stackedLabel>
-                <Label>Keterangan</Label>
-                <Input onChangeText={(value) => this.setState({Ket: value})}/>
-              </Item>
-
-              {/* <Item style={{ flexDirection:'row', marginBottom:20 }}>
-                <Button iconLeft style={{ marginRight:10, width:'45%' }}>
-                  <Icon4 name='attach-file' size={40}></Icon4>
-                  <Text style={{flex:1,justifyContent: "center",alignItems: "center"}}>Attach File</Text>
-                </Button>  
-              </Item> */}
+                <Label>Password</Label>
+                <Input onChangeText={(value) => this.setState({noTranaksi: value})} required/>
+              </Item> 
+              
               <Item style={{ flexDirection:'row' }}>
                 <Button rounded success style={{ marginRight:10, width:'45%' }} onPress={()=> {
                   this.simpanData();

@@ -23,46 +23,6 @@ import Icon3 from "react-native-vector-icons/AntDesign";
 import axios from 'axios';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-// const Signup_view = ({navigation}) => (
-    
-//   <View style={[styles.scene]}>
-//     <View style={{alignItems: "center", marginTop:20, marginBottom:20}}>
-//         <Text h3>Sign Up for Free</Text>
-//     </View> 
-//     <Form>
-//         <Item style={{ flexDirection:'row' }}>
-//             <Item stackedLabel style={{ marginRight:10, width:'45%' }}>
-//                 <Label>First Name <Text style={styles.txt_primary}>*</Text></Label>
-//                 <Input />
-//             </Item> 
-//             <Item stackedLabel style={{ marginLeft:10, width:'45%' }}>
-//                 <Label>Last Name <Text style={styles.txt_primary}>*</Text></Label>
-//                 <Input />
-//             </Item> 
-//         </Item> 
-//         <Item stackedLabel>
-//             <Label>Username <Text style={styles.txt_primary}>*</Text></Label>
-//             <Input />
-//         </Item>
-//         <Item stackedLabel>
-//             <Label>Email Address <Text style={styles.txt_primary}>*</Text></Label>
-//             <Input />
-//         </Item>
-//         <Item stackedLabel last>
-//             <Label>Set A Password <Text style={styles.txt_primary}>*</Text></Label>
-//             <Input />
-//         </Item>
-//         <View style={{ marginLeft:20,marginTop:20 }}>
-//             <Button iconLeft style={{ marginRight:10, width:'95%' }}>
-//                 {/* <Icon name='save' /> */}
-//                 <View style={{flex:1,justifyContent: "center",alignItems: "center"}}>
-//                     <Text style={{color:'white'}}>GET STARTED</Text>
-//                 </View>
-//             </Button>  
-//         </View>
-//     </Form>  
-//   </View>
-// );
 
 const Signin_view = ({navigation}) => {
     const [email_login, setEmail_login] = React.useState('');
@@ -75,6 +35,8 @@ const Signin_view = ({navigation}) => {
             email: email_login,
             pass: pass_login.toString()
         }
+
+        // console.log(dataLogin);
         // fetch('http://localhost:3131/admin/login', {
         //     method: 'POST',
         //     headers: {
@@ -97,6 +59,7 @@ const Signin_view = ({navigation}) => {
 
         axios.post('http://localhost:3131/admin/login', dataLogin)
           .then((res) => {
+            //   console.log(res.data.data);
             if (res.data.data.length>0) {
                 const dataLoginAsync = JSON.stringify(res.data.data);
                 // console.log(JSON.stringify(dataLoginAsync));
@@ -137,7 +100,7 @@ const Signin_view = ({navigation}) => {
                             <Text style={{color:'white',}}>LOGIN</Text>
                         </View>
                     </Button>  
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=> {navigation.navigate('Regis')}}>
                         <Text>Belum punya akun? click here</Text>
                     </TouchableOpacity>
                 </View>

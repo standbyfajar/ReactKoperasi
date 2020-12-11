@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  View, TouchableOpacity, ToastAndroid} from 'react-native';
+import {  View, TouchableOpacity, ToastAndroid, AsyncStorage} from 'react-native';
 // import { Camera } from 'expo-camera';
 import { 
   Container, 
@@ -51,33 +51,51 @@ export default class Pengajuan extends Component {
     
   }
   
+  getDataUser = async () => {
+    try {
+        let dataAsyncStorage = await AsyncStorage.getItem('@dataLogin');
+        dataAsyncStorage = dataAsyncStorage != null ? JSON.parse(dataAsyncStorage) : null;
+
+        this.setState({noNasabah:dataAsyncStorage[0].nomor_nasabah});
+        return dataAsyncStorage;
+      
+    } catch(error) {
+        console.log(error);
+    }
+  }
+  GetOtomatisTransaksi = async ()=>{
+        try {
+          let dataAsyncStorage = await AsyncStorage.getItem('@dataLogin');
+          dataAsyncStorage = dataAsyncStorage != null ? JSON.parse(dataAsyncStorage) : null;
+          axios.get(`http://localhost:3131/pengajuan/${dataAsyncStorage[0].nomor_nasabah}`)
+          .then(res=> {
+            if (res.data.success) {
+              this.setState({
+                noTransaksi:res.data.notrans
+              });
+          return dataAsyncStorage;
+              
+            }else{
+              console.log('Error');
+            }
+      })
+    .catch(error => console.log(error));
+        
+      } catch(error) {
+          console.log(error);
+      }
+        
+  }
+  
   setDate(newDate) {
     this.setState({ chosenDate: newDate });
   }
-
-  GetOtomatisTransaksi =() =>{
-    // console.log('aa');
-    axios.get('http://localhost:3131/pengajuan/124')
-      .then(res=> {
-        // console.log(res.data.data[0].nomor_transaksi);
-        // let data= res.data;
-        let data= res.data.data[0];
-        // console.log(data);
-
-        if (res.data.success) {
-          this.setState({
-            noTransaksi:res.data.notrans,
-            noNasabah:data.nomor_nasabah, 
-          });
-          // console.log(this.state.totalTabungan);
-
-        }else{
-          console.log('Error');
-        }
-      })
-      .catch(error => console.log(error));
-
+  componentDidMount(){
+    this.getDataUser();
+    this.GetOtomatisTransaksi();
   }
+
+  
   getCurrentDate=()=>{
 
       var date = new Date().getDate();
@@ -119,7 +137,6 @@ export default class Pengajuan extends Component {
     }
 
   render() {
-    this.GetOtomatisTransaksi()
       return (
         <Container>
           <Header>

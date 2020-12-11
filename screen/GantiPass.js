@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  View, TouchableOpacity, ToastAndroid} from 'react-native';
+import {  View, TouchableOpacity, ToastAndroid, AsyncStorage} from 'react-native';
 import { 
   Container, 
   Header, 
@@ -33,61 +33,69 @@ export default class GantiPass extends Component {
     var year = new Date().getFullYear();
 
     this.state = { 
-      chosenDate: new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString() ,
-      noTransaksi : '',
-      tglTransaksi : new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString(),
-      noNasabah : '',
-      Ket : '' };
-    this.setDate = this.setDate.bind(this);
-    this.current_date = date;
-    this.current_month = month;
-    this.current_year = year;
+      username : '',
+      email : '',
+      PASSWORD : '' };
+  
     
   }
-  
-  setDate(newDate) {
-    this.setState({ chosenDate: newDate });
-  }
-  
-  getCurrentDate=()=>{
+  getDataUser = async () => {
+    try {
+        let dataAsyncStorage = await AsyncStorage.getItem('@dataLogin');
+        dataAsyncStorage = dataAsyncStorage != null ? JSON.parse(dataAsyncStorage) : null;
+        console.log(dataAsyncStorage);
+        this.setState({username:dataAsyncStorage[0].username});
+        this.setState({email:dataAsyncStorage[0].email});
+        this.setState({PASSWORD:dataAsyncStorage[0].PASSWORD});
 
-      var date = new Date().getDate();
-      var month = new Date().getMonth() + 1;
-      var year = new Date().getFullYear();
-
-      //Alert.alert(date + '-' + month + '-' + year);
-      // You can turn it in to your desired format
-      return date + '-' + month + '-' + year;//format: dd-mm-yyyy;
-  }
-
-  simpanData =() =>{
-    // console.log(this.state);
-    const { chosenDate , noTransaksi, tglTransaksi, noNasabah, Ket } = this.state;
-    const dataInsert = {
-       nomor_transaksi : noTransaksi, tanggal_transaksi : tglTransaksi, nomor_nasabah:noNasabah,tanggal_peminjaman : chosenDate , keterangan:Ket
+        return dataAsyncStorage;
+      
+    } catch(error) {
+        console.log(error);
     }
-    if (noTransaksi == "") {
+  }
+  componentDidMount(){
+    this.getDataUser();
+  }
+
+  simpanData = async () =>{
+    try {
+      let dataAsyncStorage = await AsyncStorage.getItem('@dataLogin');
+      dataAsyncStorage = dataAsyncStorage != null ? JSON.parse(dataAsyncStorage) : null;
         
-        ToastAndroid.show("Nomor Transaksi tidak boleh kosong",ToastAndroid.SHORT);
-    }else{
-      axios.post('http://localhost:3131/pengajuan',dataInsert)
-      .then(res=> {
-        
-        // console.log(res.data.success);
-        if (res.data.success) {
-          this.props.navigation.navigate('HomeScreen');
-          // console.log("simpan berhasil");
-          ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
-        }else{
-          console.log("weew");
+        const { username , email, PASSWORD } = this.state;
+        // insert database
+        const dataInsert = {
+          username: username,
+          email: email,
+          PASSWORD : PASSWORD
         }
-      })
-      .catch(error => console.log(error));
+
+        
+        if (PASSWORD == "") {
+            
+            ToastAndroid.show("PASSWORD TIDAK BOLEH KOSONG,Jika ingin ganti password",ToastAndroid.LONG);
+        }else{
+          axios.put(`http://localhost:3131/admin/${dataAsyncStorage[0].login_id}`,dataInsert)
+          .then(res=> {
+            // console.log(res.data.success);
+            if (res.data.success) {
+              this.props.navigation.navigate('HomeScreen');
+              // console.log("simpan berhasil");
+              ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
+              return dataAsyncStorage;
+
+            }else{
+              console.log("weew");
+            }
+          })
+          .catch(error => console.log(error));
+          
+        }
+      }catch(error) {
+        console.log(error);
     }
-    // console.log(chosenDate);
-    
-    
-    }
+  }
 
   render() {
 
@@ -113,15 +121,15 @@ export default class GantiPass extends Component {
             <Form>
               <Item stackedLabel>
                 <Label>Username</Label>
-                <Input onChangeText={(value) => this.setState({noTranaksi: value})} Readonly/>
+                <Input onChangeText={(value) => this.setState({username: value})}value={this.state.username} Readonly/>
               </Item> 
               <Item stackedLabel>
                 <Label>Email</Label>
-                <Input onChangeText={(value) => this.setState({noTranaksi: value})} Readonly/>
+                <Input onChangeText={(value) => this.setState({email: value})} value={this.state.email}Readonly/>
               </Item> 
               <Item stackedLabel>
                 <Label>Password</Label>
-                <Input onChangeText={(value) => this.setState({noTranaksi: value})} required/>
+                <Input onChangeText={(value) => this.setState({PASSWORD: value})} required/>
               </Item> 
               
               <Item style={{ flexDirection:'row' }}>

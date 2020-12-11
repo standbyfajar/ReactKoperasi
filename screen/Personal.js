@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  View, TouchableOpacity, Image, ToastAndroid } from 'react-native';
+import {  AsyncStorage, View, TouchableOpacity, Image, ToastAndroid } from 'react-native';
 // import { Camera } from 'expo-camera';
 import { 
   Container, 
@@ -53,14 +53,45 @@ export default class Personal extends Component {
       alamat :'',
       bank:'',
       NoRek:'',
+      Gaji :'', 
       telepon : '',
       Foto : '',
+      TotalTabungan:'',
+      TotalPinjam:'',
       FotoIdentitas : '' };
     this.setDate = this.setDate.bind(this);
     this.current_date = date;
     this.current_month = month;
     this.current_year = year;
     
+  }
+  getDataUser = async () => {
+    try {
+        let dataAsyncStorage = await AsyncStorage.getItem('@dataLogin');
+        dataAsyncStorage = dataAsyncStorage != null ? JSON.parse(dataAsyncStorage) : null;
+        // console.log(dataAsyncStorage[0]);
+        // return;
+        this.setState({noNasabah:dataAsyncStorage[0].nomor_nasabah});
+        this.setState({namaNasabah:dataAsyncStorage[0].nama_nasabah});
+        this.setState({tempatLahir:dataAsyncStorage[0].tempat_lahir});
+        this.setState({tanggalLahir:dataAsyncStorage[0].tanggal_lahir});
+        this.setState({usia:dataAsyncStorage[0].usia});
+        this.setState({jenisKelamin:dataAsyncStorage[0].jenis_kelamin});
+        this.setState({typeIdentitas:dataAsyncStorage[0].type_identitas});
+        this.setState({noIdentitas:dataAsyncStorage[0].no_identitas});
+        this.setState({alamat:dataAsyncStorage[0].alamat});
+        this.setState({bank:dataAsyncStorage[0].Bank});
+        this.setState({NoRek:dataAsyncStorage[0].no_rek});
+        this.setState({telepon:dataAsyncStorage[0].telepon});
+        this.setState({Gaji:dataAsyncStorage[0].Gaji});
+        this.setState({TotalTabungan:dataAsyncStorage[0].total_tabungan});
+        this.setState({TotalPinjam:dataAsyncStorage[0].total_pinjam});
+
+        return dataAsyncStorage;
+      
+    } catch(error) {
+        console.log(error);
+    }
   }
 
   GetOtomatisnomor =() =>{
@@ -85,6 +116,10 @@ export default class Personal extends Component {
       .catch(error => console.log(error));
   
   }
+  componentDidMount(){
+    this.getDataUser();
+    // this.GetOtomatisnomor();
+  }
   
   Simpan = () => {
     // console.log('weew');
@@ -92,7 +127,7 @@ export default class Personal extends Component {
     bank, NoRek, telepon, Foto, FotoIdentitas } = this.state;
     const dataInput = {
       nomor_nasabah : noNasabah, nama_nasabah:namaNasabah ,tempat_lahir : tempatLahir,
-      tanggal_lahir : tanggalLahir,usia:usia ,jenis_kelamin : jenisKelamin ,type_identitas:typeIdentitas, 
+      tanggal_lahir : tanggalLahir,usia:usia ,jenis_kelamin : jenisKelamin ,type_identitas:typeIdentitas, Gaji:Gaji,
       no_identitas:noIdentitas,alamat:alamat, Bank:bank, no_rek:NoRek, telepon:telepon,Foto:Foto,Foto_identitas:FotoIdentitas
    }
    axios.post('http://localhost:3131/nasabah',dataInput)
@@ -180,9 +215,8 @@ export default class Personal extends Component {
   }
 
   render() {
-    this.GetOtomatisnomor()
 
-    const tdata = [
+    const tdata = [ 
         {
             label: 'Laki-Laki'
         },
@@ -210,21 +244,21 @@ export default class Personal extends Component {
           <Content>
             <Form>
               <Item stackedLabel>
-                <Label>Nomor Nasabah</Label>
+                <Label style={{fontWeight:"bold", color:'white'}}>Nomor Nasabah</Label>
                 <Input onChangeText={(value) => this.setState({noNasabah: value})} value={this.state.noNasabah} editable={false}/>
               </Item> 
               <Item stackedLabel>
-                <Label>
+                <Label style={{fontWeight:"bold", color:'white'}}>
                   Nama Nasabah
                 </Label>
-                <Input onChangeText={(value) => this.setState({namaNasabah: value})}/>
+                <Input onChangeText={(value) => this.setState({namaNasabah: value})} value={this.state.namaNasabah}/>
               </Item> 
               <Item stackedLabel>
                 <Label style={{fontWeight:"bold", color:'white'}}>Tempat Lahir</Label>
-                <Input onChangeText={(value) => this.setState({tempatlahir: value})}/>
+                <Input onChangeText={(value) => this.setState({tempatLahir: value})} value={this.state.tempatLahir}/>
               </Item>
               <Item disabled stackedLabel style={{alignItems:"flex-start"}}>
-                <Label>Tanggal Lahir</Label>
+                <Label style={{fontWeight:"bold", color:'white'}}>Tanggal Lahir</Label>
                 <View style={{flexDirection:"row"}}>
                   {/* <DatePicker
                     defaultDate={new Date()}
@@ -243,25 +277,27 @@ export default class Personal extends Component {
                     style={{padding:0, marginLeft:0}}
                     />
                     <Label>{this.state.chosenDate.toString().substr(4, 12)}</Label> */}
-                    <Text>{new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString()}</Text>
+                    {/* <Text>{new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString() } </Text> */}
+                    <Input value={this.state.tanggalLahir}></Input>
                 </View>
               </Item>
               <Item disabled stackedLabel style={{alignItems:"flex-start"}}>
-                <Label>Usia</Label>
+                <Label style={{fontWeight:"bold", color:'white'}}>Usia</Label>
                 <View style={{flexDirection:"row"}}>
                   <Label>{this.state.usia}</Label>
                 </View>
               </Item>
               <View style={{padding:13}}>
-                <Label>Jenis Kelamin</Label>                
-                <RadioButtonRN
+                <Label style={{fontWeight:"bold", color:'white'}}>Jenis Kelamin</Label>                
+                <Input value={this.state.jenisKelamin}></Input>
+                {/* <RadioButtonRN
                 data={tdata}
                 selectedBtn={(e) => this.setState({jenisKelamin: e.label})}
-                />
+                /> */}
               </View>
               <Item stackedLabel style={{alignItems:"flex-start"}}>
-                <Label>Type Identitas</Label>
-                <Picker style={{flexDirection:"row"}}
+                <Label style={{fontWeight:"bold", color:'white'}}>Type Identitas</Label>
+                {/* <Picker style={{flexDirection:"row"}}
                     note
                     mode="dropdown"
                     style={{ width: 250 }}
@@ -271,35 +307,37 @@ export default class Personal extends Component {
                     <Picker.Item label="Pilih Identitas" value="" />
                     <Picker.Item label="KTP" value="KTP" />
                     <Picker.Item label="SIM" value="SIM" />
-                </Picker>
+                </Picker> */}
+                <Input value={this.state.typeIdentitas}></Input>
               </Item>
               <Item stackedLabel>
-                <Label>No Identitas</Label>
-                <Input onChangeText={(value) => this.setState({noIdentitas: value})}/>
+                <Label style={{fontWeight:"bold", color:'white'}}>No Identitas</Label>
+                <Input onChangeText={(value) => this.setState({noIdentitas: value})} value={this.state.noIdentitas}/>
               </Item>
               <Item stackedLabel>
-                <Label>Alamat</Label>
-                <Input onChangeText={(value) => this.setState({alamat: value})}/>
+                <Label style={{fontWeight:"bold", color:'white'}}>Alamat</Label>
+                <Input onChangeText={(value) => this.setState({alamat: value})} value={this.state.alamat}/>
               </Item>
               <Item stackedLabel>
-                <Label>Bank</Label>
-                <Input onChangeText={(value) => this.setState({bank: value})}/>
+                <Label style={{fontWeight:"bold", color:'white'}}>Bank</Label>
+                <Input onChangeText={(value) => this.setState({bank: value})} value={this.state.bank}/>
               </Item>
               <Item stackedLabel>
-                <Label>No Rek</Label>
-                <Input onChangeText={(value) => this.setState({NoRek: value})}/>
+                <Label style={{fontWeight:"bold", color:'white'}}>No Rek</Label>
+                <Input onChangeText={(value) => this.setState({NoRek: value})} value={this.state.NoRek.toString()}/>
               </Item>
               <Item stackedLabel>
-                <Label>Telepon</Label>
-                <Input onChangeText={(value) => this.setState({telepon: value})}/>
+                <Label style={{fontWeight:"bold", color:'white'}}>Telepon</Label>
+                <Input onChangeText={(value) => this.setState({telepon: value})} value={this.state.telepon}/>
               </Item>
               <Item disabled stackedLabel>
-                <Label>Total Tabungan</Label>
-                <Input />
+                <Label style={{fontWeight:"bold", color:'white'}}>Gaji</Label>
+                <Input value={this.state.Gaji.toString()}/>
               </Item>
               <Item stackedLabel>
-                <Label>Foto</Label>
-                <TouchableOpacity
+                <Label style={{fontWeight:"bold", color:'white'}}>Total Tabungan</Label>
+                <Input value={this.state.TotalTabungan}/>
+                {/* <TouchableOpacity
                   style={{
                     alignSelf: 'flex-end',
                     alignItems: 'center',
@@ -312,14 +350,14 @@ export default class Personal extends Component {
                       style={{ color: "#fff", fontSize: 40}}
                   />
                 </TouchableOpacity>
-                <Image source={this.state.avatarSource} />
+                <Image source={this.state.avatarSource} /> */}
               </Item>
               <Item stackedLabel>
-                <Label>Foto Identitas</Label>
-                <Input onChangeText={(value) => this.setState({namaNasabah: value})}/>
+                <Label style={{fontWeight:"bold", color:'white'}}>Total Pinjam</Label>
+                <Input onChangeText={(value) => this.setState({TotalPinjam: value})} value={this.state.TotalPinjam}/>
               </Item>
              
-              <Item style={{ flexDirection:'row' }}>
+              {/* <Item style={{ flexDirection:'row' }}>
                 <Button rounded success style={{ marginRight:10, width:'45%' }} onPress={()=> {
                 this.Simpan();
                 }}>
@@ -330,7 +368,7 @@ export default class Personal extends Component {
                   <Icon2 name="cancel" size={40}></Icon2>
                   <Text style={{justifyContent: "center",alignItems: "center"}}>Cancel</Text>
                 </Button> 
-              </Item>
+              </Item> */}
    
             </Form> 
           </Content>

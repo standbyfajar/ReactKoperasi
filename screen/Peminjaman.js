@@ -200,7 +200,7 @@ export default class Peminjaman extends Component {
                 <Input onChangeText={(value) => this.setState({bunga: value})}/>
               </Item>
               <Item stackedLabel last>
-                <Label>Cicilan/Bulan</Label>
+                <Label>Setor/Bulan</Label>
                 <Input onChangeText={(value) => this.setState({kredit: value})}/>
               </Item>
               <Item stackedLabel last>

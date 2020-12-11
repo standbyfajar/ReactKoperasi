@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, AsyncStorage, ToastAndroid} from 'react-native';
+import { View, StyleSheet, Dimensions, AsyncStorage, ToastAndroid, Image} from 'react-native';
 
 import { 
     Container, 
@@ -37,7 +37,7 @@ const Register = ({navigation}) => {
     const buttonRegis = () => {
         const dataLogin = {
             email: email,
-            pass: pass.toString(),
+            PASSWORD: pass,
             namadepan:namadepan,
             namabelakang:namabelakang,
             username:username
@@ -50,19 +50,31 @@ const Register = ({navigation}) => {
                 navigation.navigate('Login');
                 // this.props.navigation.navigate('HomeScreen');
                 // console.log("simpan berhasil");
-                msg="Berhasil Daftar ! Silahkan Cek Email pada Kotak Masuk "
-                ToastAndroid.show(res.data.msg,ToastAndroid.SHORT);
+                // message="Berhasil Daftar ! Silahkan Cek Email pada Kotak Masuk "
+                ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
               }else{
                 console.log("weew");
               }
-
             
           })
     }
+    const {height, width} = Dimensions.get("window");
+
     return(
-        <View style={[styles.scene]}>
+        
+       <Container>
+           <Header style={{ height:height * 0.10, width:width,
+                backgroundColor:"white",marginTop:10,marginBottom:10,
+                elevation:0,alignItems:"center"}}>
+                    <Image
+                        style={{width:70, borderRadius:30,height:70,marginRight:5}}
+                        source={require('../assets/image/kop.jpg')}
+                    />
+                    <Text style={{fontSize:20,fontWeight:"bold"}}>Koperasi Sahabat Mandiri</Text>
+                </Header>
+           <View style={[styles.scene]}>
         <View style={{alignItems: "center", marginTop:20, marginBottom:20}}>
-            <Text h3>Sign Up for Free</Text>
+            <Text h4>Sign Up for Free</Text>
         </View> 
         <Form>
             <Item style={{ flexDirection:'row' }}>
@@ -89,7 +101,9 @@ const Register = ({navigation}) => {
             </Item>
             <View style={{ marginLeft:20,marginTop:20 }}>
                 <Button iconLeft style={{ marginRight:10, width:'95%' }}
-                    onPress={() => buttonRegis()}>
+                    onPress={() => buttonRegis()} >
+                    {/* onPress={() => buttonRegis()} */}
+                    
                     {/* <Icon name='save' /> */}
                     
                     <View style={{flex:1,justifyContent: "center",alignItems: "center"}}>
@@ -99,11 +113,10 @@ const Register = ({navigation}) => {
             </View>
         </Form>  
       </View>
+       </Container>
     )
 
 }
-
- 
 const styles = StyleSheet.create({
     scene: {
       flex: 1,

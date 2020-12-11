@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, AsyncStorage} from 'react-native';
+import { View, StyleSheet, Dimensions, AsyncStorage,Image} from 'react-native';
 
 import { 
     Container, 
@@ -110,26 +110,21 @@ const Signin_view = ({navigation}) => {
 };
 
 const initialLayout = { width: Dimensions.get('window').width };
+const {height, width} = Dimensions.get("window");
 
 const Login = ({navigation}) => {
 
     return (
         <Container>
-            <Header>
-                <Left>
-                    <Button transparent>
-                    <Icon3 name='arrowleft' style={{color:'#f0ffff'}} size={30}></Icon3>
-                    </Button>
-                </Left>
-                <Body>
-                    <Title>Header</Title>
-                </Body>
-                <Right>
-                    <Button transparent>
-                    {/* <Icon name='menu' /> */}
-                    </Button>
-                </Right>
-            </Header>
+                <Header style={{ height:height * 0.10, width:width,
+                backgroundColor:"white",marginTop:10,
+                elevation:0,alignItems:"center"}}>
+                    <Image
+                        style={{width:70, borderRadius:30,height:70,marginRight:5}}
+                        source={require('../assets/image/kop.jpg')}
+                    />
+                    <Text style={{fontSize:20,fontWeight:"bold"}}>Koperasi Sahabat Mandiri</Text>
+                </Header>
             <Signin_view navigation={navigation}/>
         </Container>
     );

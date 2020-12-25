@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {  View, TouchableOpacity,ToastAndroid} from 'react-native';
+import {  View, TouchableOpacity,ToastAndroid, LogBox} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 // import { Camera } from 'expo-camera';
 import { 
   Container, 
@@ -56,38 +57,31 @@ export default class Peminjaman extends Component {
     
   }
 
-  //  GetDataUser = async () => {
-  //   try{
-  //     let dataAsyncStorage = await AsyncStorage.getItem('');
-  //     dataAsyncStorage = dataAsyncStorage != null ? JSON.parse(dataAsyncStorage) : null;
-  //     this.setState({nomor_nasabah:dataAsyncStorage.nomor_nasabah});
+
+  GetOtomatisPengajuan  = async () =>{
     
-  //   }
-  // }
-  GetOtomatisPengajuan =() =>{
-    // console.log('aa');
-    axios.get('http://localhost:3131/peminjaman/1111/1211')
-      .then(res=> {
-        // console.log(res.data.data[0].nomor_transaksi);
-        // let data= res.data;
-        let data= res.data.data[0];
-        // console.log(data);
+      try {
 
-        if (res.data.success) {
-          this.setState({
-            noPengajuan:data.nomor_transaksi,
-            noNasabah:data.nomor_nasabah, 
-            noPinjam:res.data.notrans,
-            totalTabungan:res.data.tabungan
-          });
-          // console.log(this.state.totalTabungan);
+        let dataAsyncStorage = await AsyncStorage.getItem('@dataLogin');
+        dataAsyncStorage = dataAsyncStorage != null ? JSON.parse(dataAsyncStorage) : null;
+        
+        axios.get(`http://localhost:3131/peminjaman/${dataAsyncStorage[0].nomor_nasabah}`)
+              .then(res=> {
+                let data = res.data.data[0];
 
-        }else{
-          console.log('Error');
-        }
+                this.setState({
+                  noPengajuan:data.nomor_transaksi,
+                  noNasabah:data.nomor_nasabah, 
+                  noPinjam:res.data.notransaksi,
+                  totalTabungan:res.data.tabungan
+                });
+                return dataAsyncStorage;
       })
       .catch(error => console.log(error));
-
+      } catch(error) {
+          console.log(error);
+      }
+    
   }
 
   simpanData =() =>{
@@ -176,7 +170,7 @@ export default class Peminjaman extends Component {
               </Item> 
               <Item stackedLabel>
                 <Label>No Transaksi</Label>
-                <Input onChangeText={(value) => this.setState({noPinjam: value})} value={this.state.noPinjam} editable={false}/>
+                <Input onChangeText={(value) => this.setState({noPinjam: value})} editable={false} value={this.state.noPinjam}/>
               </Item>
               <Item  stackedLabel>
                 <Label>Nasabah</Label>
@@ -185,7 +179,7 @@ export default class Peminjaman extends Component {
               </Item>
               <Item stackedLabel>
                 <Label>Total Tabungan </Label>
-                <Input onChangeText={(value) => this.setState({totalTabungan: value})} value={this.state.totalTabungan.toString()} editable={false}/>
+                <Input onChangeText={(value) => this.setState({totalTabungan: value})} editable={false} value={this.state.totalTabungan.toString()}/>
               </Item>
               <Item stackedLabel last>
                 <Label>Nominal</Label>

@@ -1,6 +1,7 @@
 import React, {useEffect,useState} from 'react';
 import { Container, Header, Content, List, ListItem, Text, Separator, Button, Left, Body, Title, Right, Icon,View } from 'native-base';
-import { AsyncStorage, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Icon3 from "react-native-vector-icons/AntDesign";
 import Icon4 from "react-native-vector-icons/Fontisto";
 import Icon5 from "react-native-vector-icons/Entypo";
@@ -8,9 +9,7 @@ import Icon6 from "react-native-vector-icons/SimpleLineIcons";
 import Menu from '../components/Menu';
 import Iconawe from "react-native-vector-icons/FontAwesome5";
 
-
-
-const Email = (props) => {
+    const Email = (props) => {
     const [email, setEmail_login] = React.useState('');
     const [namadepan, setnamadepan] = React.useState('');
     const [telepon, setTelepon] = React.useState('');
@@ -21,6 +20,18 @@ const Email = (props) => {
         getDataUser();
       }, []);
 
+    const logout = async() => {
+    // console.log('s');
+    try {
+        await AsyncStorage.removeItem('@dataLogin');
+        let data = await AsyncStorage.getItem('@dataLogin');
+        props.navigation.navigate("Login");
+        }
+        catch(exception) {
+        console.log(exception);
+        return false;
+        }
+    }
     const getDataUser = async () => {
         try {
             let dataAsyncStorage = await AsyncStorage.getItem('@dataLogin');
@@ -117,7 +128,7 @@ const Email = (props) => {
                         </Button> 
                     </Left>
                     <Body>
-                        <Text>Log Out</Text>
+                        <Text onPress={()=> {logout()}}> Log Out</Text>
                     </Body>
                 </ListItem>
                 </Content>

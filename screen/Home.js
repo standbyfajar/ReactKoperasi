@@ -10,7 +10,8 @@ import Icon3 from "react-native-vector-icons/Entypo";
 const {height, width} = Dimensions.get("window");
 // console.log(height,width);
 const Home = ({navigation}) => {
-    console.log(navigation);
+    // console.log(navigation);
+    
     return (
 
         <Container>

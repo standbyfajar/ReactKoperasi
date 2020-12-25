@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {  View, TouchableOpacity, ToastAndroid, AsyncStorage} from 'react-native';
-// import { Camera } from 'expo-camera';
+import {  View, TouchableOpacity, ToastAndroid} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { 
   Container, 
   Header, 
@@ -118,9 +118,7 @@ export default class Pengajuan extends Component {
         ToastAndroid.show("Nomor Transaksi tidak boleh kosong",ToastAndroid.SHORT);
     }else{
       axios.post('http://localhost:3131/pengajuan',dataInsert)
-      .then(res=> {
-        
-        // console.log(res.data.success);
+      .then(res=> {          
         if (res.data.success) {
           this.props.navigation.navigate('HomeScreen');
           // console.log("simpan berhasil");
@@ -131,10 +129,7 @@ export default class Pengajuan extends Component {
       })
       .catch(error => console.log(error));
     }
-    // console.log(chosenDate);
-    
-    
-    }
+  }
 
   render() {
       return (

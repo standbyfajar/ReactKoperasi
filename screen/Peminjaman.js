@@ -46,15 +46,22 @@ export default class Peminjaman extends Component {
       noNasabah: '',
       totalTabungan:0,
       nominal : '',
-      cicil : '',
-      bunga :'',
-      kredit:'',
+      cicil : 0,
+      bunga :0,
+      kredit:0,
       ket:''  };
     this.setDate = this.setDate.bind(this);
     this.current_date = date;
     this.current_month = month;
     this.current_year = year;
     
+  }
+
+  hitungData =() =>{
+    let nominal = 'aa';
+    // let cicil ='';
+    // let bunga ='';
+    // let kredit='';
   }
 
 
@@ -128,6 +135,27 @@ export default class Peminjaman extends Component {
       return date + '-' + month + '-' + year;//format: dd-mm-yyyy;
   }
 
+  handleChangeCicilan = (value) => {
+    let nominal = this.state.nominal;
+    let jasa    = 0;
+    if (nominal==5000) {
+        jasa=0.1;
+    }
+    else if (nominal >5000 && nominal <10000){
+        jasa=0.2;  
+    }
+    else{
+         jasa= 0.3;
+    }
+    
+    let cicilan = value;
+    
+    let cicil_bln=0;
+    cicil_bln = (nominal/cicilan) + jasa;
+    
+    this.setState({bunga:jasa, kredit: cicil_bln});
+  }
+
   render() {
       return (
         <Container>
@@ -187,15 +215,15 @@ export default class Peminjaman extends Component {
               </Item>
               <Item stackedLabel last>
                 <Label>x cicilan</Label>
-                <Input onChangeText={(value) => this.setState({cicil: value})}/>
+                <Input onChangeText={(value) => this.handleChangeCicilan(value)} value={this.state.cicil}/>
               </Item>
               <Item stackedLabel last>
                 <Label>Jasa</Label>
-                <Input onChangeText={(value) => this.setState({bunga: value})}/>
+                <Input onChangeText={(value) => this.setState({bunga: value})} value={this.state.bunga.toString()}/>
               </Item>
               <Item stackedLabel last>
                 <Label>Setor/Bulan</Label>
-                <Input onChangeText={(value) => this.setState({kredit: value})}/>
+                <Input onChangeText={(value) => this.setState({kredit: value})} value={this.state.kredit.toString()}/>
               </Item>
               <Item stackedLabel last>
                 <Label>keterangan</Label>

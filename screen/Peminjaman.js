@@ -100,8 +100,8 @@ export default class Peminjaman extends Component {
     }
     // console.log(dataInsert);
     
-      if(nominal > totalTabungan){
-        ToastAndroid.show('Tidak bisa cok', ToastAndroid.LONG);
+      if(nominal > totalTabungan && totalTabungan < 0){
+        ToastAndroid.show('Total Tabungan kurang dari jumlah nominal', ToastAndroid.LONG);
       }else{
         axios.post('http://localhost:3131/peminjaman',dataInsert)
         .then(res=> {

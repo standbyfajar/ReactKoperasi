@@ -25,7 +25,8 @@ import Icon3 from "react-native-vector-icons/AntDesign";
 import Icon4 from "react-native-vector-icons/MaterialIcons";
 import Menu from '../components/Menu';
 import axios from 'axios';
-
+import Moment from 'react-moment';
+import 'moment-timezone';
 
 
 // import * as Permissions from 'expo-permissions';
@@ -39,7 +40,7 @@ export default class Pengajuan extends Component {
     var year = new Date().getFullYear();
 
     this.state = { 
-      chosenDate: new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString() ,
+      chosenDate: new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString(),
       noTransaksi : '',
       tglTransaksi : new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString(),
       noNasabah : '',
@@ -88,7 +89,9 @@ export default class Pengajuan extends Component {
   }
   
   setDate(newDate) {
-    this.setState({ chosenDate: newDate });
+    var tomorrow = new Date(newDate);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    this.setState({ chosenDate: tomorrow });
   }
   componentDidMount(){
     this.getDataUser();
@@ -170,17 +173,17 @@ export default class Pengajuan extends Component {
               </Item>
               <Item disabled stackedLabel style={{alignItems:"flex-start"}}>
                 <Label>Tanggal Peminjaman</Label>
-                {/* <View style={{flexDirection:"row"}}>
+                <View style={{flexDirection:"row"}}>
                   <DatePicker
                     defaultDate={new Date()}
                     minimumDate={new Date(1990-1, 12, 31)}
-                    maximumDate={new Date(2025-1, 12, 31)}
+                    maximumDate={new Date(2030-1, 12, 31)}
                     locale={"en"}
                     timeZoneOffsetInMinutes={undefined}
                     modalTransparent={false}
                     animationType={"fade"}
                     androidMode={"default"}
-                    placeHolderText={this.state.chosenDate.toString().substr(4, 12)}
+                    placeHolderText={this.state.chosenDate.toString()}
                     textStyle={{ color: "green" }}
                     placeHolderTextStyle={{ color: "#d3d3d3" }}
                     onDateChange={this.setDate}
@@ -188,8 +191,9 @@ export default class Pengajuan extends Component {
                     style={{padding:0, marginLeft:0}}
                     />
                     <Label>{this.state.chosenDate.toString().substr(4, 12)}</Label>
-                </View> */}
-                <Text>{new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString()}</Text>
+                    
+                </View>
+                {/* <Text>{new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString()}</Text> */}
 
               </Item>
               <Item stackedLabel>

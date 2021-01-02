@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions,Image} from 'react-native';
+import { View, StyleSheet, Dimensions,Image,ToastAndroid} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { 
     Container, 
@@ -47,7 +47,9 @@ const Signin_view = ({navigation}) => {
 
                 try {
                     AsyncStorage.setItem('@dataLogin',dataLoginAsync );
-                    console.log('sukses',dataLoginAsync);
+                    // console.log('sukses',dataLoginAsync);
+                    ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
+
 
                 } catch (error) {
                     console.log(error);
@@ -70,7 +72,7 @@ const Signin_view = ({navigation}) => {
                 </Item>
                 <Item stackedLabel last>
                     <Label>Set A Password <Text style={styles.txt_primary}>*</Text></Label>
-                    <Input value={{pass_login}} onChangeText={(text) => setPass_login(text)} />
+                    <Input secureTextEntry={true} value={{pass_login}} onChangeText={(text) => setPass_login(text)} />
                 </Item>
                 <View style={{ marginLeft:20,marginTop:20 }}>
                     <Button iconLeft style={{ marginRight:10, width:'95%' }}
@@ -101,7 +103,7 @@ const Login = ({navigation}) => {
                 backgroundColor:"white",marginTop:10,
                 elevation:0,alignItems:"center"}}>
                     <Image
-                        style={{width:70, borderRadius:30,height:70,marginRight:5}}
+                        style={{width:70,borderRadius:35,height:70,marginRight:5}}
                         source={require('../assets/image/kop.jpg')}
                     />
                     <Text style={{fontSize:20,fontWeight:"bold"}}>Koperasi Sahabat Mandiri</Text>

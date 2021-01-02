@@ -53,7 +53,7 @@ const Register = ({navigation}) => {
                 // message="Berhasil Daftar ! Silahkan Cek Email pada Kotak Masuk "
                 ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
               }else{
-                console.log("weew");
+                // console.log("weew");
               }
             
           })
@@ -67,7 +67,7 @@ const Register = ({navigation}) => {
                 backgroundColor:"white",marginTop:10,marginBottom:10,
                 elevation:0,alignItems:"center"}}>
                     <Image
-                        style={{width:70, borderRadius:30,height:70,marginRight:5}}
+                        style={{width:70,borderRadius:35,height:70,marginRight:5}}
                         source={require('../assets/image/kop.jpg')}
                     />
                     <Text style={{fontSize:20,fontWeight:"bold"}}>Koperasi Sahabat Mandiri</Text>
@@ -97,7 +97,7 @@ const Register = ({navigation}) => {
             </Item>
             <Item stackedLabel last>
                 <Label>Set A Password <Text style={styles.txt_primary}>*</Text></Label>
-                <Input value={{pass}} onChangeText={(text) => setPass(text)}/>
+                <Input secureTextEntry={true} value={{pass}} onChangeText={(text) => setPass(text)}/>
             </Item>
             <View style={{ marginLeft:20,marginTop:20 }}>
                 <Button iconLeft style={{ marginRight:10, width:'95%' }}

@@ -17,7 +17,7 @@ const Home = ({navigation}) => {
         <Container>
             <Header style={{ height:height * 0.20, width:width,backgroundColor:"red",elevation:0,alignItems:"center"}}>
             <Image
-                style={{width:70, borderRadius:30,height:70,marginRight:5}}
+                style={{width:70,borderRadius:35,height:70,marginRight:5}}
                 source={require('../assets/image/kop.jpg')}
             />
              <Text style={{fontSize:20,fontWeight:"bold"}}>Koperasi Sahabat Mandiri</Text>
@@ -50,31 +50,16 @@ const Home = ({navigation}) => {
                                 <TouchableOpacity onPress={() => {navigation.navigate("TransaksiPeminjaman")}}><Text >Transaksi Peminjaman </Text></TouchableOpacity>
                                 </View>
                             </View>
+                       
                             {/* <View style={{flexDirection:"row",flex:1, justifyContent:"center"}}>
-                                <View style={{justifyContent:"center",flex:2, alignItems:"center"}}>
-                                  <Text><Icon name="user" size={60} onPress={() => {navigation.navigate("Personal")}}></Icon></Text>
-                                </View>
-                                <View style={{justifyContent:"center",flex:3}}>
-                                <TouchableOpacity onPress={() => {navigation.navigate("Personal")}}><Text >Personal Info </Text></TouchableOpacity>
-                                </View>
-                            </View> */}
-                            <View style={{flexDirection:"row",flex:1, justifyContent:"center"}}>
                                 <View style={{justifyContent:"center",flex:2, alignItems:"center"}}>
                                   <Text><Icon3 name="log-out" size={60} onPress={() => {navigation.navigate("Login")}}></Icon3></Text>
                                 </View>
                                 <View style={{justifyContent:"center",flex:3}}>
                                 <TouchableOpacity onPress={() => {navigation.navigate("Login")}}><Text >Logout </Text></TouchableOpacity>
                                 </View>
-                            </View>
-                            {/* <View style={{flexDirection:"row",flex:1, justifyContent:"center"}}>
-                                <View style={{justifyContent:"center",flex:2, alignItems:"center"}}>
-                                  <Text><Icon3 name="log-out" size={60} onPress={() => {navigation.navigate("Register")}}></Icon3></Text>
-                                </View>
-                                <View style={{justifyContent:"center",flex:3}}>
-                                <TouchableOpacity onPress={() => {navigation.navigate("Register")}}><Text >Regis </Text></TouchableOpacity>
-                                </View>
                             </View> */}
-
+                            
                     </View>
             </Content>
         </Container>

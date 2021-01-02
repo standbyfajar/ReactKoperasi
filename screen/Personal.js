@@ -96,7 +96,7 @@ export default class Personal extends Component {
 
   GetOtomatisnomor =() =>{
     // console.log('aa');
-    axios.get('http://localhost:3131/nasabah/124')
+    axios.get('https://koperasimobile.herokuapp.com/nasabah/124')
       .then(res=> {
         // console.log(res.data.data[0].nomor_transaksi);
         // let data= res.data;
@@ -130,7 +130,7 @@ export default class Personal extends Component {
       tanggal_lahir : tanggalLahir,usia:usia ,jenis_kelamin : jenisKelamin ,type_identitas:typeIdentitas, Gaji:Gaji,
       no_identitas:noIdentitas,alamat:alamat, Bank:bank, no_rek:NoRek, telepon:telepon,Foto:Foto,Foto_identitas:FotoIdentitas
    }
-   axios.post('http://localhost:3131/nasabah',dataInput)
+   axios.post('https://koperasimobile.herokuapp.com/nasabah',dataInput)
       .then(res=> {
         // console.log(res.data.success);
         if (res.data.success) {

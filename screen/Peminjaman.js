@@ -72,7 +72,7 @@ export default class Peminjaman extends Component {
         let dataAsyncStorage = await AsyncStorage.getItem('@dataLogin');
         dataAsyncStorage = dataAsyncStorage != null ? JSON.parse(dataAsyncStorage) : null;
         
-        axios.get(`http://localhost:3131/peminjaman/${dataAsyncStorage[0].nomor_nasabah}`)
+        axios.get(`https://koperasimobile.herokuapp.com/peminjaman/${dataAsyncStorage[0].nomor_nasabah}`)
               .then(res=> {
                 let data = res.data.data[0];
 
@@ -103,7 +103,7 @@ export default class Peminjaman extends Component {
       if(nominal > totalTabungan && totalTabungan < 0){
         ToastAndroid.show('Total Tabungan kurang dari jumlah nominal', ToastAndroid.LONG);
       }else{
-        axios.post('http://localhost:3131/peminjaman',dataInsert)
+        axios.post('https://koperasimobile.herokuapp.com/peminjaman',dataInsert)
         .then(res=> {
           // console.log(res.data);
           // console.log(res.data.success);

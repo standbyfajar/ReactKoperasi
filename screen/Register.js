@@ -43,7 +43,7 @@ const Register = ({navigation}) => {
             username:username
         }
 
-        axios.post('http://localhost:3131/admin/regis', dataLogin)
+        axios.post('https://koperasimobile.herokuapp.com/admin/regis', dataLogin)
           .then((res) => {
             //   console.log(res.data.data);
             if (res.data.success) {

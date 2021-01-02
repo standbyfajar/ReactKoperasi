@@ -68,7 +68,7 @@ export default class Pengajuan extends Component {
         try {
           let dataAsyncStorage = await AsyncStorage.getItem('@dataLogin');
           dataAsyncStorage = dataAsyncStorage != null ? JSON.parse(dataAsyncStorage) : null;
-          axios.get(`http://localhost:3131/pengajuan/${dataAsyncStorage[0].nomor_nasabah}`)
+          axios.get(`https://koperasimobile.herokuapp.com/pengajuan/${dataAsyncStorage[0].nomor_nasabah}`)
           .then(res=> {
             if (res.data.success) {
               this.setState({
@@ -120,7 +120,7 @@ export default class Pengajuan extends Component {
         
         ToastAndroid.show("Nomor Transaksi tidak boleh kosong",ToastAndroid.SHORT);
     }else{
-      axios.post('http://localhost:3131/pengajuan',dataInsert)
+      axios.post('https://koperasimobile.herokuapp.com/pengajuan',dataInsert)
       .then(res=> {          
         if (res.data.success) {
           this.props.navigation.navigate('HomeScreen');

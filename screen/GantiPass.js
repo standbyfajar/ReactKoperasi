@@ -76,7 +76,7 @@ export default class GantiPass extends Component {
             
             ToastAndroid.show("PASSWORD TIDAK BOLEH KOSONG,Jika ingin ganti password",ToastAndroid.LONG);
         }else{
-          axios.put(`http://localhost:3131/admin/${dataAsyncStorage[0].login_id}`,dataInsert)
+          axios.put(`https://koperasimobile.herokuapp.com/admin/${dataAsyncStorage[0].login_id}`,dataInsert)
           .then(res=> {
             // console.log(res.data.success);
             if (res.data.success) {

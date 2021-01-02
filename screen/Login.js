@@ -36,28 +36,9 @@ const Signin_view = ({navigation}) => {
             pass: pass_login.toString()
         }
 
-        // console.log(dataLogin);
-        // fetch('http://localhost:3131/admin/login', {
-        //     method: 'POST',
-        //     headers: {
-        //         Accept: 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         email: email_login,
-        //         pass: pass_login
-        //     })    
-        // })
-        // .then((response) => response.json())
-        //     .then((json) => {
-        //         console.log(json);
-        //         return json;
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     });
+    
 
-        axios.post('http://localhost:3131/admin/login', dataLogin)
+        axios.post('https://koperasimobile.herokuapp.com/admin/login', dataLogin)
           .then((res) => {
             //   console.log(res.data.data);
             if (res.data.data.length>0) {

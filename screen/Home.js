@@ -63,7 +63,7 @@ const Home = ({navigation}) => {
                                   <Text><Icon3 name="log-out" size={60} onPress={() => {navigation.navigate("Login")}}></Icon3></Text>
                                 </View>
                                 <View style={{justifyContent:"center",flex:3}}>
-                                <TouchableOpacity onPress={() => {navigation.navigate("Login")}}><Text >Login </Text></TouchableOpacity>
+                                <TouchableOpacity onPress={() => {navigation.navigate("Login")}}><Text >Logout </Text></TouchableOpacity>
                                 </View>
                             </View>
                             {/* <View style={{flexDirection:"row",flex:1, justifyContent:"center"}}>

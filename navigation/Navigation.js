@@ -32,7 +32,7 @@ const Navigation = createStackNavigator(
         // Camera : Camera
     },
     {
-        initialRouteName :"HomeScreen",
+        initialRouteName :"Login",
         headerMode :"none"
     }
 )

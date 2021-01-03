@@ -100,9 +100,13 @@ export default class Peminjaman extends Component {
     }
     // console.log(dataInsert);
     
-      if(nominal > totalTabungan && totalTabungan < 0){
+      if(nominal > totalTabungan ){
         ToastAndroid.show('Total Tabungan kurang dari jumlah nominal', ToastAndroid.LONG);
-      }else{
+      }else if(totalTabungan <= 0 && totalTabungan == ''){
+        ToastAndroid.show('Total Tabungan Kurang dari 0', ToastAndroid.LONG);
+
+      }
+      else{
         axios.post('https://koperasimobile.herokuapp.com/peminjaman',dataInsert)
         .then(res=> {
           // console.log(res.data);
@@ -237,7 +241,7 @@ export default class Peminjaman extends Component {
                   <Icon1 name="save" size={40} style={{marginLeft:10}}></Icon1>
                   <Text style={{justifyContent: "center",alignItems: "center"}}>Save</Text>
                 </Button> 
-                <Button rounded danger style={{ marginLeft:10, width:'45%' }}>
+                <Button rounded danger style={{ marginLeft:10, width:'45%' }} onPress={() => {this.props.navigation.navigate("HomeScreen")}}>
                   <Icon2 name="cancel" size={40} style={{marginLeft:10}}></Icon2>
                   <Text style={{justifyContent: "center",alignItems: "center"}}>Cancel</Text>
                 </Button> 

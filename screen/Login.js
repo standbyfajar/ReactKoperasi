@@ -68,11 +68,12 @@ const Signin_view = ({navigation}) => {
             <Form>   
                 <Item stackedLabel>
                     <Label>Email Address <Text style={styles.txt_primary}>*</Text></Label>
-                    <Input value={{email_login}} onChangeText={(text) => setEmail_login(text)}/>
+                    <Input value={{email_login}} onChangeText={(text) => setEmail_login(text)} clearButtonMode="always"/>
+                    
                 </Item>
                 <Item stackedLabel last>
                     <Label>Set A Password <Text style={styles.txt_primary}>*</Text></Label>
-                    <Input secureTextEntry={true} value={{pass_login}} onChangeText={(text) => setPass_login(text)} />
+                    <Input secureTextEntry={true} value={{pass_login}} onChangeText={(text) => setPass_login(text)} clearButtonMode="always"/>
                 </Item>
                 <View style={{ marginLeft:20,marginTop:20 }}>
                     <Button iconLeft style={{ marginRight:10, width:'95%' }}

@@ -260,25 +260,7 @@ export default class Personal extends Component {
               <Item disabled stackedLabel style={{alignItems:"flex-start"}}>
                 <Label style={{fontWeight:"bold", color:'white'}}>Tanggal Lahir</Label>
                 <View style={{flexDirection:"row"}}>
-                  {/* <DatePicker
-                    defaultDate={new Date()}
-                    minimumDate={new Date(1990-1, 12, 31)}
-                    maximumDate={new Date(2025-1, 12, 31)}
-                    locale={"en"}
-                    timeZoneOffsetInMinutes={undefined}
-                    modalTransparent={false}
-                    animationType={"fade"}
-                    androidMode={"default"}
-                    placeHolderText={this.state.chosenDate.toString().substr(4, 12)}
-                    textStyle={{ color: "green" }}
-                    placeHolderTextStyle={{ color: "#d3d3d3" }}
-                    onDateChange={this.setDate}
-                    disabled={false}
-                    style={{padding:0, marginLeft:0}}
-                    />
-                    <Label>{this.state.chosenDate.toString().substr(4, 12)}</Label> */}
-                    {/* <Text>{new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString() } </Text> */}
-                    <Input value={this.state.tanggalLahir}></Input>
+                    <Input value={this.state.tanggalLahir.toString().substr(0,10)}></Input>
                 </View>
               </Item>
               <Item disabled stackedLabel style={{alignItems:"flex-start"}}>
@@ -290,24 +272,10 @@ export default class Personal extends Component {
               <View style={{padding:13}}>
                 <Label style={{fontWeight:"bold", color:'white'}}>Jenis Kelamin</Label>                
                 <Input value={this.state.jenisKelamin}></Input>
-                {/* <RadioButtonRN
-                data={tdata}
-                selectedBtn={(e) => this.setState({jenisKelamin: e.label})}
-                /> */}
+               
               </View>
               <Item stackedLabel style={{alignItems:"flex-start"}}>
                 <Label style={{fontWeight:"bold", color:'white'}}>Type Identitas</Label>
-                {/* <Picker style={{flexDirection:"row"}}
-                    note
-                    mode="dropdown"
-                    style={{ width: 250 }}
-                    selectedValue={this.state.selected}
-                    onValueChange={this.onValueChange.bind(this)}
-                    >
-                    <Picker.Item label="Pilih Identitas" value="" />
-                    <Picker.Item label="KTP" value="KTP" />
-                    <Picker.Item label="SIM" value="SIM" />
-                </Picker> */}
                 <Input value={this.state.typeIdentitas}></Input>
               </Item>
               <Item stackedLabel>

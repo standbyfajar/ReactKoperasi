@@ -18,7 +18,6 @@ import {
   Right,
   Left
 } from 'native-base';
-
 import Icon1 from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/MaterialIcons";
 import Icon3 from "react-native-vector-icons/AntDesign";
@@ -27,10 +26,6 @@ import Menu from '../components/Menu';
 import axios from 'axios';
 import Moment from 'react-moment';
 import 'moment-timezone';
-
-
-// import * as Permissions from 'expo-permissions';
-// import { FontAwesome, Ionicons,MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default class Pengajuan extends Component {
   constructor(props) {
@@ -114,7 +109,8 @@ export default class Pengajuan extends Component {
     // console.log(this.state);
     const { chosenDate , noTransaksi, tglTransaksi, noNasabah, Ket } = this.state;
     const dataInsert = {
-       nomor_transaksi : noTransaksi, tanggal_transaksi : tglTransaksi, nomor_nasabah:noNasabah,tanggal_peminjaman : chosenDate , keterangan:Ket
+       nomor_transaksi : noTransaksi, tanggal_transaksi : tglTransaksi, 
+       nomor_nasabah:noNasabah,tanggal_peminjaman : new Date(chosenDate).toISOString().substr(0,10), keterangan:Ket
     }
     if (noTransaksi == "") {
         
@@ -123,11 +119,16 @@ export default class Pengajuan extends Component {
       axios.post('https://koperasimobile.herokuapp.com/pengajuan',dataInsert)
       .then(res=> {          
         if (res.data.success) {
+          // console.log(res.data.success);
+
           this.props.navigation.navigate('HomeScreen');
-          // console.log("simpan berhasil");
           ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
         }else{
-          console.log("weew");
+          console.log("Gagal Simpan");
+          // console.log(res.data);
+
+          // ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
+
         }
       })
       .catch(error => console.log(error));
@@ -149,7 +150,6 @@ export default class Pengajuan extends Component {
             </Body>
             <Right>
               <Button transparent>
-                {/* <Icon name='menu' /> */}
               </Button>
             </Right>
           </Header>
@@ -157,7 +157,7 @@ export default class Pengajuan extends Component {
             <Form>
               <Item stackedLabel>
                 <Label>Nomor Transaksi</Label>
-                <Input onChangeText={(value) => this.setState({noTransaksi: value})} value={this.state.noTransaksi} required editable={false}/>
+                <Input onChangeText={(value) => this.setState({noTransaksi: value})} value={this.state.noTransaksi} required />
               </Item> 
               <Item stackedLabel>
                 <Label>
@@ -183,14 +183,14 @@ export default class Pengajuan extends Component {
                     modalTransparent={false}
                     animationType={"fade"}
                     androidMode={"default"}
-                    placeHolderText={this.state.chosenDate.toString()}
+                    placeHolderText={this.state.chosenDate.toString().substr(0,10)}
                     textStyle={{ color: "green" }}
                     placeHolderTextStyle={{ color: "#d3d3d3" }}
                     onDateChange={this.setDate}
                     disabled={false}
                     style={{padding:0, marginLeft:0}}
                     />
-                    <Label>{this.state.chosenDate.toString().substr(4, 12)}</Label>
+                    <Label>{this.state.chosenDate.toString().substr(0,10)}</Label>
                     
                 </View>
                 {/* <Text>{new Date().getFullYear().toString()+'/'+(new Date().getMonth()+1).toString()+'/'+new Date().getDate().toString()}</Text> */}
@@ -200,13 +200,6 @@ export default class Pengajuan extends Component {
                 <Label>Keterangan</Label>
                 <Input onChangeText={(value) => this.setState({Ket: value})}/>
               </Item>
-
-              {/* <Item style={{ flexDirection:'row', marginBottom:20 }}>
-                <Button iconLeft style={{ marginRight:10, width:'45%' }}>
-                  <Icon4 name='attach-file' size={40}></Icon4>
-                  <Text style={{flex:1,justifyContent: "center",alignItems: "center"}}>Attach File</Text>
-                </Button>  
-              </Item> */}
               <Item style={{ flexDirection:'row' }}>
                 <Button rounded success style={{ marginRight:10, width:'45%' }} onPress={()=> {
                   this.simpanData();
@@ -214,7 +207,7 @@ export default class Pengajuan extends Component {
                   <Icon1 name="save" size={40}></Icon1>
                   <Text style={{justifyContent: "center",alignItems: "center"}}>Save</Text>
                 </Button> 
-                <Button rounded danger style={{ marginLeft:10, width:'45%'}}>
+                <Button rounded danger style={{ marginLeft:10, width:'45%'}} onPress={() => {this.props.navigation.navigate("HomeScreen")}}>
                   <Icon2 name="cancel" size={40}></Icon2>
                   <Text style={{justifyContent: "center",alignItems: "center"}}>Cancel</Text>
                 </Button> 
@@ -228,6 +221,3 @@ export default class Pengajuan extends Component {
   }
 }
 
-
-
-//export default Pengajuan;

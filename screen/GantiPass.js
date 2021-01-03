@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {  View, TouchableOpacity, ToastAndroid, AsyncStorage} from 'react-native';
+import {  View, TouchableOpacity, ToastAndroid} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { 
   Container, 
   Header, 

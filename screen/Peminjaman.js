@@ -57,13 +57,6 @@ export default class Peminjaman extends Component {
     
   }
 
-  hitungData =() =>{
-    let nominal = 'aa';
-    // let cicil ='';
-    // let bunga ='';
-    // let kredit='';
-  }
-
 
   GetOtomatisPengajuan  = async () =>{
     
@@ -142,22 +135,24 @@ export default class Peminjaman extends Component {
   handleChangeCicilan = (value) => {
     let nominal = this.state.nominal;
     let jasa    = 0;
-    if (nominal==5000) {
-        jasa=0.1;
+    if (nominal<=5000000) {
+        jasa=1 * nominal;
     }
-    else if (nominal >5000 && nominal <10000){
-        jasa=0.2;  
+    else if (nominal >5000000 && nominal <10000000){
+        jasa=1.5 * nominal;  
     }
     else{
-         jasa= 0.3;
+         jasa= 2 * nominal;
     }
     
     let cicilan = value;
-    
+    let setor = 0;
     let cicil_bln=0;
-    cicil_bln = (nominal/cicilan) + jasa;
     
-    this.setState({bunga:jasa, kredit: cicil_bln});
+    cicil_bln = (nominal*cicilan)/100 ;
+    setor= cicil_bln+ jasa;
+    
+    this.setState({bunga:jasa, kredit: setor, cicil:cicilan});
   }
 
   render() {

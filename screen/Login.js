@@ -22,7 +22,7 @@ import { Text } from 'react-native-elements';
 import Icon3 from "react-native-vector-icons/AntDesign";
 import axios from 'axios';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+// import SweetAlert from 'react-native-sweet-alert';
 
 const Signin_view = ({navigation}) => {
     const [email_login, setEmail_login] = React.useState('');
@@ -49,7 +49,17 @@ const Signin_view = ({navigation}) => {
                     AsyncStorage.setItem('@dataLogin',dataLoginAsync );
                     // console.log('sukses',dataLoginAsync);
                     ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
-
+                    // SweetAlert.showAlertWithOptions({
+                    //     title: 'Notification',
+                    //     subTitle: '',
+                    //     confirmButtonTitle: 'OK',
+                    //     confirmButtonColor: '#000',
+                    //     otherButtonTitle: 'Cancel',
+                    //     otherButtonColor: '#dedede',
+                    //     style: 'success',
+                    //     cancellable: true
+                    //   },
+                    //     callback => console.log('callback'));
 
                 } catch (error) {
                     console.log(error);

@@ -136,13 +136,13 @@ export default class Peminjaman extends Component {
     let nominal = this.state.nominal;
     let jasa    = 0;
     if (nominal<=5000000) {
-        jasa=1 * nominal;
+        jasa= (1 * nominal) /100;
     }
     else if (nominal >5000000 && nominal <10000000){
-        jasa=1.5 * nominal;  
+        jasa= (1.5 * nominal) /100;  
     }
     else{
-         jasa= 2 * nominal;
+         jasa= (2 * nominal) /100;
     }
     
     let cicilan = value;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {  AsyncStorage, View, TouchableOpacity, Image, ToastAndroid } from 'react-native';
-// import { Camera } from 'expo-camera';
+import {  View, TouchableOpacity, Image, ToastAndroid } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { 
   Container, 
   Header, 
@@ -304,7 +304,7 @@ export default class Personal extends Component {
               </Item>
               <Item stackedLabel>
                 <Label style={{fontWeight:"bold", color:'white'}}>Total Tabungan</Label>
-                <Input value={this.state.TotalTabungan}/>
+                <Input value={this.state.TotalTabungan.toString()}/>
                 {/* <TouchableOpacity
                   style={{
                     alignSelf: 'flex-end',
@@ -322,7 +322,7 @@ export default class Personal extends Component {
               </Item>
               <Item stackedLabel>
                 <Label style={{fontWeight:"bold", color:'white'}}>Total Pinjam</Label>
-                <Input onChangeText={(value) => this.setState({TotalPinjam: value})} value={this.state.TotalPinjam}/>
+                <Input value={this.state.TotalPinjam.toString()}/>
               </Item>
              
               {/* <Item style={{ flexDirection:'row' }}>

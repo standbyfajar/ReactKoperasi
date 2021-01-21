@@ -92,11 +92,14 @@ export default class Peminjaman extends Component {
        nomor_nasabah : noNasabah ,nominal:nominal,cicilan:cicil,bunga:bunga,kredit_bulan:kredit, keterangan:ket
     }
     // console.log(dataInsert);
-    
-      if(nominal > totalTabungan ){
-        ToastAndroid.show('Total Tabungan kurang dari jumlah nominal', ToastAndroid.LONG);
+      if ( totalTabungan >= 5000000 && nominal >= 5000000 && nominal <=10000000 ){
+        ToastAndroid.show('tidak lebih dari 10 Juta', ToastAndroid.LONG);
+        
+      }
+      else if( totalTabungan <= 5000000){
+        ToastAndroid.show('Total Tabungan Kurang dari 5 Juta', ToastAndroid.LONG);
       }else if(totalTabungan <= 0 && totalTabungan == ''){
-        ToastAndroid.show('Total Tabungan Kurang dari 0', ToastAndroid.LONG);
+        ToastAndroid.show('Total Tabungan Tidak Cukup', ToastAndroid.LONG);
 
       }
       else{

@@ -92,15 +92,16 @@ export default class Peminjaman extends Component {
        nomor_nasabah : noNasabah ,nominal:nominal,cicilan:cicil,bunga:bunga,kredit_bulan:kredit, keterangan:ket
     }
     // console.log(dataInsert);
-      if ( totalTabungan >= 5000000 && nominal >= 5000000 && nominal <=10000000 ){
-        ToastAndroid.show('tidak lebih dari 10 Juta', ToastAndroid.LONG);
-        
+      if (nominal > 10000000  && totalTabungan >= 5000000 && totalTabungan < 10000000){
+        ToastAndroid.show('tidak lebih dari 10 Juta', ToastAndroid.LONG);  
+        // console.log(nominal);
+      }else if (nominal > 20000000  && totalTabungan >= 10000000 && totalTabungan < 20000000){
+        ToastAndroid.show('tidak lebih dari 20 Juta', ToastAndroid.LONG);  
       }
-      else if( totalTabungan <= 5000000){
+      else if( totalTabungan < 5000000){
         ToastAndroid.show('Total Tabungan Kurang dari 5 Juta', ToastAndroid.LONG);
       }else if(totalTabungan <= 0 && totalTabungan == ''){
         ToastAndroid.show('Total Tabungan Tidak Cukup', ToastAndroid.LONG);
-
       }
       else{
         axios.post('https://koperasimobile.herokuapp.com/peminjaman',dataInsert)
@@ -182,7 +183,7 @@ export default class Peminjaman extends Component {
                 <View style={{flexDirection:'row'}}>
                   <Label>Nomor Pengajuan </Label>
                   <TouchableOpacity transparent onPress={()=> this.GetOtomatisPengajuan()}>
-                    <Icon4 name='popup' style={{color:'#f0ffff', marginTop:10}} size={20}>
+                    <Icon4 name='popup' style={{ marginTop:10}} size={25}>
 
                     </Icon4>
                   </TouchableOpacity>

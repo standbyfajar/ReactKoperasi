@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import BottomNavigation, {
     FullTab
 } from 'react-native-material-bottom-navigation'
-import {  View, TouchableOpacity} from 'react-native';
+import {  View, TouchableOpacity, SafeAreaView} from 'react-native';
 import Icon from "react-native-vector-icons/Foundation";
 import Iconawe from "react-native-vector-icons/FontAwesome5";
 import Icon3 from "react-native-vector-icons/Entypo";
@@ -29,12 +29,12 @@ const Menu = (props) => {
   console.log('porps',props);
 
   return(
-    <View style={{ flexDirection:'row', alignSelf:"center", height:50, alignItems:"baseline", borderWidth:1}}>
-      <Text style={{marginHorizontal:40}}><Icon name="home" size={40} onPress={()=>{props.navigation.navigate("HomeScreen")}}/></Text>
-      <Text style={{marginHorizontal:40}}><Icon3 name="open-book" size={40} onPress={()=>{props.navigation.navigate("TransaksiPengajuan")}}/></Text>
-      <Text style={{marginHorizontal:40}}><Iconawe name="money-bill-wave" size={40} onPress={()=>{props.navigation.navigate("TransaksiPeminjaman")}}/></Text>
-      <Text style={{marginHorizontal:40}}><Icon name="torso" size={40} onPress={()=>{props.navigation.navigate("AkunSaya")}}/></Text>
-    </View>
+    <View style={{ flexDirection:'row',marginTop:-40, height:50, alignItems:"baseline", borderWidth:1}}>
+      <TouchableOpacity style={{marginHorizontal:31}}><Icon name="home" size={40} onPress={()=>{props.navigation.navigate("HomeScreen")}}/></TouchableOpacity>
+      <TouchableOpacity style={{marginHorizontal:31}}><Icon3 name="open-book" size={40} onPress={()=>{props.navigation.navigate("TransaksiPengajuan")}}/></TouchableOpacity>
+      <TouchableOpacity style={{marginHorizontal:31}}><Iconawe name="money-bill-wave" size={40} onPress={()=>{props.navigation.navigate("TransaksiPeminjaman")}}/></TouchableOpacity>
+      <TouchableOpacity style={{marginHorizontal:31}}><Icon name="torso" size={40} onPress={()=>{props.navigation.navigate("AkunSaya")}}/></TouchableOpacity>
+    </View>  
   );
 }
 

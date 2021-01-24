@@ -92,16 +92,19 @@ export default class Peminjaman extends Component {
        nomor_nasabah : noNasabah ,nominal:nominal,cicilan:cicil,bunga:bunga,kredit_bulan:kredit, keterangan:ket
     }
     // console.log(dataInsert);
-      if (nominal > 10000000  && totalTabungan >= 5000000 && totalTabungan < 10000000){
-        ToastAndroid.show('tidak lebih dari 10 Juta', ToastAndroid.LONG);  
-        // console.log(nominal);
-      }else if (nominal > 20000000  && totalTabungan >= 10000000 && totalTabungan < 20000000){
-        ToastAndroid.show('tidak lebih dari 20 Juta', ToastAndroid.LONG);  
+      if (nominal > 15000000  && totalTabungan >= 5000000 && totalTabungan < 10000000){
+        ToastAndroid.show('tidak lebih dari 15 Juta', ToastAndroid.LONG);  
       }
+      // else if (nominal > 20000000  && totalTabungan >= 10000000 && totalTabungan < 20000000){
+      //   ToastAndroid.show('tidak lebih dari 20 Juta', ToastAndroid.LONG);  
+      // }
       else if( totalTabungan < 5000000){
         ToastAndroid.show('Total Tabungan Kurang dari 5 Juta', ToastAndroid.LONG);
       }else if(totalTabungan <= 0 && totalTabungan == ''){
         ToastAndroid.show('Total Tabungan Tidak Cukup', ToastAndroid.LONG);
+      }else if (cicil > 16){
+        ToastAndroid.show('Jumlah Bulan untuk cicilan maksimal 16', ToastAndroid.LONG);
+
       }
       else{
         axios.post('https://koperasimobile.herokuapp.com/peminjaman',dataInsert)
@@ -217,7 +220,7 @@ export default class Peminjaman extends Component {
                 <Input onChangeText={(value) => this.setState({nominal: value})}/>
               </Item>
               <Item stackedLabel last>
-                <Label>x cicilan</Label>
+                <Label>Jumlah Bulan cicilan</Label>
                 <Input onChangeText={(value) => this.handleChangeCicilan(value)} value={this.state.cicil}/>
               </Item>
               <Item stackedLabel last>

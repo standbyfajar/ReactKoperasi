@@ -241,87 +241,73 @@ export default class Personal extends Component {
               </Button>
             </Right>
           </Header>
-          <Content>
+          <Content style={{marginBottom:50}}>
             <Form>
               <Item stackedLabel>
-                <Label style={{fontWeight:"bold", color:'white'}}>Nomor Nasabah</Label>
+                <Label style={{fontWeight:"bold"}}>Nomor Nasabah</Label>
                 <Input onChangeText={(value) => this.setState({noNasabah: value})} value={this.state.noNasabah} editable={false}/>
               </Item> 
               <Item stackedLabel>
-                <Label style={{fontWeight:"bold", color:'white'}}>
+                <Label style={{fontWeight:"bold"}}>
                   Nama Nasabah
                 </Label>
                 <Input onChangeText={(value) => this.setState({namaNasabah: value})} value={this.state.namaNasabah}/>
               </Item> 
               <Item stackedLabel>
-                <Label style={{fontWeight:"bold", color:'white'}}>Tempat Lahir</Label>
+                <Label style={{fontWeight:"bold"}}>Tempat Lahir</Label>
                 <Input onChangeText={(value) => this.setState({tempatLahir: value})} value={this.state.tempatLahir}/>
               </Item>
               <Item disabled stackedLabel style={{alignItems:"flex-start"}}>
-                <Label style={{fontWeight:"bold", color:'white'}}>Tanggal Lahir</Label>
+                <Label style={{fontWeight:"bold"}}>Tanggal Lahir</Label>
                 <View style={{flexDirection:"row"}}>
                     <Input value={this.state.tanggalLahir.toString().substr(0,10)}></Input>
                 </View>
               </Item>
               <Item disabled stackedLabel style={{alignItems:"flex-start"}}>
-                <Label style={{fontWeight:"bold", color:'white'}}>Usia</Label>
+                <Label style={{fontWeight:"bold"}}>Usia</Label>
                 <View style={{flexDirection:"row"}}>
                   <Label>{this.state.usia}</Label>
                 </View>
               </Item>
               <View style={{padding:13}}>
-                <Label style={{fontWeight:"bold", color:'white'}}>Jenis Kelamin</Label>                
+                <Label style={{fontWeight:"bold"}}>Jenis Kelamin</Label>                
                 <Input value={this.state.jenisKelamin}></Input>
                
               </View>
               <Item stackedLabel style={{alignItems:"flex-start"}}>
-                <Label style={{fontWeight:"bold", color:'white'}}>Type Identitas</Label>
+                <Label style={{fontWeight:"bold"}}>Type Identitas</Label>
                 <Input value={this.state.typeIdentitas}></Input>
               </Item>
               <Item stackedLabel>
-                <Label style={{fontWeight:"bold", color:'white'}}>No Identitas</Label>
+                <Label style={{fontWeight:"bold"}}>No Identitas</Label>
                 <Input onChangeText={(value) => this.setState({noIdentitas: value})} value={this.state.noIdentitas}/>
               </Item>
               <Item stackedLabel>
-                <Label style={{fontWeight:"bold", color:'white'}}>Alamat</Label>
+                <Label style={{fontWeight:"bold"}}>Alamat</Label>
                 <Input onChangeText={(value) => this.setState({alamat: value})} value={this.state.alamat}/>
               </Item>
               <Item stackedLabel>
-                <Label style={{fontWeight:"bold", color:'white'}}>Bank</Label>
+                <Label style={{fontWeight:"bold"}}>Bank</Label>
                 <Input onChangeText={(value) => this.setState({bank: value})} value={this.state.bank}/>
               </Item>
               <Item stackedLabel>
-                <Label style={{fontWeight:"bold", color:'white'}}>No Rek</Label>
+                <Label style={{fontWeight:"bold"}}>No Rek</Label>
                 <Input onChangeText={(value) => this.setState({NoRek: value})} value={this.state.NoRek.toString()}/>
               </Item>
               <Item stackedLabel>
-                <Label style={{fontWeight:"bold", color:'white'}}>Telepon</Label>
+                <Label style={{fontWeight:"bold"}}>Telepon</Label>
                 <Input onChangeText={(value) => this.setState({telepon: value})} value={this.state.telepon}/>
               </Item>
               <Item disabled stackedLabel>
-                <Label style={{fontWeight:"bold", color:'white'}}>Gaji</Label>
+                <Label style={{fontWeight:"bold"}}>Gaji</Label>
                 <Input value={this.state.Gaji.toString()}/>
               </Item>
               <Item stackedLabel>
-                <Label style={{fontWeight:"bold", color:'white'}}>Total Tabungan</Label>
+                <Label style={{fontWeight:"bold"}}>Total Tabungan</Label>
                 <Input value={this.state.TotalTabungan.toString()}/>
-                {/* <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent',
-                  }}
-                  onPress={()=>this.tesFoto()}
-                  >
-                  <Icon1
-                      name="camera-switch"
-                      style={{ color: "#fff", fontSize: 40}}
-                  />
-                </TouchableOpacity>
-                <Image source={this.state.avatarSource} /> */}
               </Item>
               <Item stackedLabel>
-                <Label style={{fontWeight:"bold", color:'white'}}>Total Pinjam</Label>
+                <Label style={{fontWeight:"bold"}}>Total Pinjam</Label>
                 <Input value={this.state.TotalPinjam.toString()}/>
               </Item>
              

@@ -24,14 +24,13 @@ import axios from 'axios';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-
 const Register = ({navigation}) => {
     const [email, setEmail] = React.useState('');
     const [pass, setPass] = React.useState('');
     const [namadepan, setnamadepan] = React.useState('');
     const [namabelakang, setnamabelakang] = React.useState('');
     const [username, setusername] = React.useState('');
-
+    let [ValueButtonStateHolder, setValueButton]= React.useState(false);
     
 
     const buttonRegis = () => {
@@ -41,8 +40,39 @@ const Register = ({navigation}) => {
             namadepan:namadepan,
             namabelakang:namabelakang,
             username:username
-        }
 
+        }
+        if (!namadepan.trim()) {
+            let message="Harap isi Nama Depan";
+            ToastAndroid.show(message,ToastAndroid.SHORT);
+            // alert('Please Enter Name');
+            return;
+          }
+           if (!namabelakang.trim()) {
+            let message="Harap isi Nama Belakang";
+            ToastAndroid.show(message,ToastAndroid.SHORT);
+            // alert('Please Enter Name');
+            return;
+          }
+          if (!username.trim()) {
+            let message="Harap isi Username";
+            ToastAndroid.show(message,ToastAndroid.SHORT);
+            // alert('Please Enter Name');
+            return;
+          }
+        if (!email.trim()) {
+            let message="Harap isi Email";
+            ToastAndroid.show(message,ToastAndroid.SHORT);
+            // alert('Please Enter Name');
+            return;
+          }
+           if (!pass.trim()) {
+            let message="Harap isi Password";
+            ToastAndroid.show(message,ToastAndroid.SHORT);
+            // alert('Please Enter Name');
+            return;
+          }
+          
         axios.post('https://koperasimobile.herokuapp.com/admin/regis', dataLogin)
           .then((res) => {
             //   console.log(res.data.data);
@@ -57,6 +87,7 @@ const Register = ({navigation}) => {
               }
             
           })
+          setValueButton(true);
     }
     const {height, width} = Dimensions.get("window");
 
@@ -80,7 +111,7 @@ const Register = ({navigation}) => {
             <Item style={{ flexDirection:'row' }}>
                 <Item stackedLabel style={{ marginRight:10, width:'45%' }}>
                     <Label>First Name <Text style={styles.txt_primary}>*</Text></Label>
-                    <Input value={{namadepan}} onChangeText={(text) => setnamadepan(text)} />
+                    <Input value={{namadepan}} onChangeText={(text) => setnamadepan(text)} require/>
                 </Item> 
                 <Item stackedLabel style={{ marginLeft:10, width:'45%' }}>
                     <Label>Last Name <Text style={styles.txt_primary}>*</Text></Label>
@@ -100,11 +131,11 @@ const Register = ({navigation}) => {
                 <Input secureTextEntry={true} value={{pass}} onChangeText={(text) => setPass(text)}/>
             </Item>
             <View style={{ marginLeft:20,marginTop:20 }}>
-                <Button iconLeft style={{ marginRight:10, width:'95%' }}
-                    onPress={() => buttonRegis()} >
-                    {/* onPress={() => buttonRegis()} */}
-                    
-                    {/* <Icon name='save' /> */}
+                <Button  iconLeft style={{ marginRight:10, width:'95%' }}
+                    activeOpacity = { .5 } 
+                    onPress={() => buttonRegis()} 
+                    disabled={ValueButtonStateHolder}
+                    >
                     
                     <View style={{flex:1,justifyContent: "center",alignItems: "center"}}>
                         <Text style={{color:'white'}}>GET STARTED</Text>

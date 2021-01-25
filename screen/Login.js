@@ -36,6 +36,18 @@ const Signin_view = ({navigation}) => {
             pass: pass_login.toString()
         }
 
+        if (!email_login.trim()) {
+            let message="Harap isi Email";
+            ToastAndroid.show(message,ToastAndroid.SHORT);
+            // alert('Please Enter Name');
+            return;
+          }
+          if (!pass_login.trim()) {
+            let message="Harap isi Password Anda";
+            ToastAndroid.show(message,ToastAndroid.SHORT);
+            // alert('Please Enter Name');
+            return;
+          }
     
 
         axios.post('https://koperasimobile.herokuapp.com/admin/login', dataLogin)
@@ -48,7 +60,6 @@ const Signin_view = ({navigation}) => {
                 try {
                     AsyncStorage.setItem('@dataLogin',dataLoginAsync );
                     // console.log('sukses',dataLoginAsync);
-                    ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
                     // SweetAlert.showAlertWithOptions({
                     //     title: 'Notification',
                     //     subTitle: '',
@@ -66,6 +77,10 @@ const Signin_view = ({navigation}) => {
                 }
 
                 navigation.navigate('HomeScreen');
+                ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
+            }else{
+                ToastAndroid.show(res.data.message,ToastAndroid.SHORT);
+
             }
           })
     }

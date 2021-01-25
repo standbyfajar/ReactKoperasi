@@ -91,6 +91,12 @@ export default class Peminjaman extends Component {
        nomor_pengajuan : noPengajuan, tanggal_transaksi : tanggaltransaksi, nomor_pinjam:noPinjam,
        nomor_nasabah : noNasabah ,nominal:nominal,cicilan:cicil,bunga:bunga,kredit_bulan:kredit, keterangan:ket
     }
+    if (!noPengajuan.trim()) {
+      let message="Harap isi Nomor Pengajuan yang sudah di Approved";
+      ToastAndroid.show(message,ToastAndroid.SHORT);
+      // alert('Please Enter Name');
+      return;
+    }
     // console.log(dataInsert);
       if (nominal > 15000000  && totalTabungan >= 5000000 && totalTabungan < 10000000){
         ToastAndroid.show('tidak lebih dari 15 Juta', ToastAndroid.LONG);  
